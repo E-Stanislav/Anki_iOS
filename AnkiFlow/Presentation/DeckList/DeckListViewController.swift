@@ -36,7 +36,7 @@ final class DeckListViewController: UIViewController {
         view.configure(
             icon: UIImage(systemName: "rectangle.stack.badge.plus"),
             title: "No Decks Yet",
-            message: "Import an Anki deck to get started"
+            message: "Tap + to create a deck or import an .apkg file"
         )
         view.isHidden = true
         return view
@@ -115,6 +115,34 @@ final class DeckListViewController: UIViewController {
     }
 
     @objc private func addButtonTapped() {
+        let alert = UIAlertController(title: "Add Deck", message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "Create New Deck", style: .default) { [weak self] _ in
+            self?.showCreateDeck()
+        })
+
+        alert.addAction(UIAlertAction(title: "Import .apkg File", style: .default) { [weak self] _ in
+            self?.showFilePicker()
+        })
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = addButton
+            popover.sourceRect = addButton.bounds
+        }
+
+        present(alert, animated: true)
+    }
+
+    private func showCreateDeck() {
+        let createDeckVC = CreateDeckViewController()
+        createDeckVC.delegate = self
+        let nav = UINavigationController(rootViewController: createDeckVC)
+        present(nav, animated: true)
+    }
+
+    private func showFilePicker() {
         let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.data])
         picker.delegate = self
         picker.allowsMultipleSelection = false
@@ -253,6 +281,14 @@ extension DeckListViewController: UICollectionViewDelegateFlowLayout {
         let padding = AppConstants.Spacing.md * 3
         let width = (collectionView.bounds.width - padding) / 2
         return CGSize(width: width, height: 160)
+    }
+}
+
+extension DeckListViewController: CreateDeckDelegate {
+    func didCreateDeck(_ deck: Deck) {
+        viewModel.loadDecks()
+        collectionView.reloadData()
+        updateEmptyState()
     }
 }
 

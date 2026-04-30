@@ -59,22 +59,34 @@ struct ReviewTable {
 
         var cards: [Card] = []
 
-        let joinedQuery = table
-            .join(CardTable.table, on: cardId == CardTable.id)
-            .filter(CardTable.deckId == deckUUID.uuidString)
-            .filter(CardTable.isSuspended == false)
-            .filter(dueDate < tomorrow)
+        let sql = """
+            SELECT c.id, c.deck_id, c.front, c.back, c.tags, c.created_at
+            FROM cards c
+            INNER JOIN reviews r ON c.id = r.card_id
+            WHERE c.deck_id = ? AND c.is_suspended = 0 AND r.due_date < ?
+        """
 
-        for row in try db.prepare(joinedQuery) {
-            if let uuid = UUID(uuidString: row[CardTable.id]),
-               let deckUUID = UUID(uuidString: row[CardTable.deckId]) {
+        let dueTimestamp = tomorrow.timeIntervalSince1970
+
+        for row in try db.prepare(sql, deckUUID.uuidString, dueTimestamp) {
+            if let idStr = row[0] as? String,
+               let deckIdStr = row[1] as? String,
+               let id = UUID(uuidString: idStr),
+               let deckId = UUID(uuidString: deckIdStr) {
+                let createdAt: Date
+                if let timestamp = row[5] as? Double {
+                    createdAt = Date(timeIntervalSince1970: timestamp)
+                } else {
+                    createdAt = Date()
+                }
+
                 let card = Card(
-                    id: uuid,
-                    deckId: deckUUID,
-                    front: row[CardTable.front],
-                    back: row[CardTable.back],
-                    tags: row[CardTable.tags],
-                    createdAt: row[CardTable.createdAt]
+                    id: id,
+                    deckId: deckId,
+                    front: row[2] as? String ?? "",
+                    back: row[3] as? String ?? "",
+                    tags: row[4] as? String ?? "",
+                    createdAt: createdAt
                 )
                 cards.append(card)
             }
@@ -90,14 +102,19 @@ struct ReviewTable {
 
         let today = Calendar.current.startOfDay(for: Date())
         let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+        let dueTimestamp = tomorrow.timeIntervalSince1970
 
-        let joinedQuery = table
-            .join(CardTable.table, on: cardId == CardTable.id)
-            .filter(CardTable.deckId == deckUUID.uuidString)
-            .filter(CardTable.isSuspended == false)
-            .filter(dueDate < tomorrow)
+        let sql = """
+            SELECT COUNT(*) FROM cards c
+            INNER JOIN reviews r ON c.id = r.card_id
+            WHERE c.deck_id = ? AND c.is_suspended = 0 AND r.due_date < ?
+        """
 
-        return try db.scalar(joinedQuery.count)
+        let result = try db.scalar(sql, deckUUID.uuidString, dueTimestamp)
+        if let count = result as? Int64 {
+            return Int(count)
+        }
+        return 0
     }
 
     static func updateReview(_ review: Review) throws {

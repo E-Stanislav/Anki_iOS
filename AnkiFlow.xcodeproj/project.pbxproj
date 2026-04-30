@@ -23,6 +23,7 @@
 		617E36F6443EC0FEEDC72658 /* UIColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FDEA8C4420E9BF0FEAEF5 /* UIColor+Theme.swift */; };
 		62A3578A3A86C63A239A5697 /* SpacedRepetition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9E24EAA86CF4DD825F32F6 /* SpacedRepetition.swift */; };
 		651E1996B6EFA09073E3FE77 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0187845AD5E562F731831C6F /* Deck.swift */; };
+		7114F7DC0793E619FC3DA4F3 /* NewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2830DFB21082C83BCFC73BDA /* NewCardViewController.swift */; };
 		72C5548E4E2D566D04E69816 /* CardStudyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634B8A7F494B2367DD17C06D /* CardStudyViewModel.swift */; };
 		7830BBA806767F670D801A81 /* StudySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B034131639EEAC1653B96 /* StudySession.swift */; };
 		7E8F6E44F5E1711EC62C6985 /* DeckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35ABB07CFDE939EFB7E3393B /* DeckCell.swift */; };
@@ -39,6 +40,7 @@
 		D4ED3F76C4536C1C7A7430D2 /* CardTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317614AAEFA4634BEAF42EF0 /* CardTable.swift */; };
 		E1D1625E6213292D2CE30989 /* AnkiDBReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224688CBF8276C58E4F40A36 /* AnkiDBReader.swift */; };
 		EA20CE903876E9CA365FF322 /* StudyCardUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86DA154DD4BED129BD9522DC /* StudyCardUseCase.swift */; };
+		F2F81B2D4BD732043115E8D5 /* CreateDeckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10845F9F7D8E05860660948 /* CreateDeckViewController.swift */; };
 		F50081A3B1EB5446503902B9 /* CardStudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC8CBF8D75DAAB61F883570 /* CardStudyViewController.swift */; };
 		F9B374932AD6642BBFE3B2E8 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6BCEADF06F9486B50AA745 /* DatabaseManager.swift */; };
 		FA7DBD0D6983FD9E7E3B0B3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E968D9D2035B7865CA503B71 /* Assets.xcassets */; };
@@ -57,6 +59,7 @@
 		1485D404BC38EA82AB70E3CC /* CardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRepository.swift; sourceTree = "<group>"; };
 		1D5F981103AAA9112988FF34 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		224688CBF8276C58E4F40A36 /* AnkiDBReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnkiDBReader.swift; sourceTree = "<group>"; };
+		2830DFB21082C83BCFC73BDA /* NewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCardViewController.swift; sourceTree = "<group>"; };
 		2B4502C1AC4ACB97F973450A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		2BD71D46D5370E8D12BA3C8E /* ImportDeckUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportDeckUseCase.swift; sourceTree = "<group>"; };
 		317614AAEFA4634BEAF42EF0 /* CardTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTable.swift; sourceTree = "<group>"; };
@@ -64,7 +67,7 @@
 		39FF0C626F5FF2F38E70E15E /* CardBrowserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBrowserCell.swift; sourceTree = "<group>"; };
 		50FA806B13221AA94BA21EDA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		5523AA60593415035B700B2D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnkiFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AnkiFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B9E24EAA86CF4DD825F32F6 /* SpacedRepetition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacedRepetition.swift; sourceTree = "<group>"; };
 		5E31522AB9F84512D611742B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		5E9EBFE8124C187AF150BE1E /* ApkgParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApkgParser.swift; sourceTree = "<group>"; };
@@ -80,6 +83,7 @@
 		9F812CB31F4582BCA1A7311A /* DeckRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckRepository.swift; sourceTree = "<group>"; };
 		A714FEC7A39876822ED0FB47 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
 		A953F4C19D5488AD7141610F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B10845F9F7D8E05860660948 /* CreateDeckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDeckViewController.swift; sourceTree = "<group>"; };
 		B989B0232C785C7E21D3B1EC /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C664F3B94F5A68B19E231F8A /* DeckListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckListViewController.swift; sourceTree = "<group>"; };
 		E968D9D2035B7865CA503B71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 				39FF0C626F5FF2F38E70E15E /* CardBrowserCell.swift */,
 				7092C7A3A5B702D70AD34AD4 /* CardBrowserViewController.swift */,
 				1160C6756979A30D9CA13533 /* CardBrowserViewModel.swift */,
+				2830DFB21082C83BCFC73BDA /* NewCardViewController.swift */,
 			);
 			path = CardBrowser;
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 		6894F54788053B5294B39BA7 /* DeckList */ = {
 			isa = PBXGroup;
 			children = (
+				B10845F9F7D8E05860660948 /* CreateDeckViewController.swift */,
 				35ABB07CFDE939EFB7E3393B /* DeckCell.swift */,
 				C664F3B94F5A68B19E231F8A /* DeckListViewController.swift */,
 				0F03B31D9CBD8659C314220A /* DeckListViewModel.swift */,
@@ -355,6 +361,7 @@
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					BAEF28DBDD81702205B47706 = {
+						DevelopmentTeam = DJMBTK698A;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -412,6 +419,7 @@
 				F50081A3B1EB5446503902B9 /* CardStudyViewController.swift in Sources */,
 				72C5548E4E2D566D04E69816 /* CardStudyViewModel.swift in Sources */,
 				D4ED3F76C4536C1C7A7430D2 /* CardTable.swift in Sources */,
+				F2F81B2D4BD732043115E8D5 /* CreateDeckViewController.swift in Sources */,
 				F9B374932AD6642BBFE3B2E8 /* DatabaseManager.swift in Sources */,
 				5F8719AB8B3FDEDA8583D420 /* Date+Extensions.swift in Sources */,
 				651E1996B6EFA09073E3FE77 /* Deck.swift in Sources */,
@@ -422,6 +430,7 @@
 				0779349FA00347A581D80EA8 /* DeckTable.swift in Sources */,
 				FDAFBE41401641CA376120AE /* FlashcardView.swift in Sources */,
 				16DA9DA5264260B40B0762BD /* ImportDeckUseCase.swift in Sources */,
+				7114F7DC0793E619FC3DA4F3 /* NewCardViewController.swift in Sources */,
 				2E4B2E4404B2F3AE3E52D752 /* Review.swift in Sources */,
 				5B474277F34C5A30DFA260E6 /* ReviewTable.swift in Sources */,
 				C8BECD1CE1C3C7716B3BE520 /* SceneDelegate.swift in Sources */,
@@ -445,13 +454,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
 				INFOPLIST_FILE = AnkiFlow/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -463,13 +471,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
 				INFOPLIST_FILE = AnkiFlow/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

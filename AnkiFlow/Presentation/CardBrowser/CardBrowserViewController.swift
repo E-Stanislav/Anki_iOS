@@ -77,6 +77,19 @@ final class CardBrowserViewController: UIViewController {
     private func setupNavigationBar() {
         title = deck.name
         navigationItem.largeTitleDisplayMode = .never
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(addCardTapped)
+        )
+    }
+
+    @objc private func addCardTapped() {
+        let newCardVC = NewCardViewController(deck: deck)
+        newCardVC.delegate = self
+        let nav = UINavigationController(rootViewController: newCardVC)
+        present(nav, animated: true)
     }
 
     private func updateEmptyState() {
@@ -141,5 +154,13 @@ extension CardBrowserViewController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+}
+
+extension CardBrowserViewController: NewCardDelegate {
+    func didCreateCard(_ card: Card) {
+        viewModel.loadCards()
+        tableView.reloadData()
+        updateEmptyState()
     }
 }

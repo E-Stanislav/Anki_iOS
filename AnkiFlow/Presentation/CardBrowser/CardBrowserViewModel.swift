@@ -12,7 +12,7 @@ final class CardBrowserViewModel {
         loadCards()
     }
 
-    private func loadCards() {
+    func loadCards() {
         allCards = cardRepository.fetchCardsByDeck(deckId: deck.id)
         cards = allCards
     }
