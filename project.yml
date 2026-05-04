@@ -87,3 +87,29 @@ targets:
         UISupportsDocumentBrowser: true
         NSPhotoLibraryUsageDescription: "AnkiFlow needs access to your photos to add images to flashcards."
         NSMicrophoneUsageDescription: "AnkiFlow needs microphone access to record audio for flashcards."
+
+  AnkiFlowTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: AnkiFlowTests
+        type: group
+    dependencies:
+      - target: AnkiFlow
+    settings:
+      base:
+        INFOPLIST_FILE: AnkiFlowTests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ankiflow.app.tests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/AnkiFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnkiFlow"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+    info:
+      path: AnkiFlowTests/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: en
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: "6.0"
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: BNDL
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"

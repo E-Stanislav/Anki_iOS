@@ -53,6 +53,13 @@ struct DeckDetailView: View {
             Section("Cards") {
                 ForEach(viewModel.cards) { card in
                     CardRowView(card: card)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                viewModel.deleteCard(card)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                 }
             }
         }
@@ -188,5 +195,10 @@ final class DeckDetailViewModel: ObservableObject {
     func refresh() {
         stats = deckRepo.getStats(for: deck.id) ?? stats
         loadCards()
+    }
+
+    func deleteCard(_ card: Card) {
+        cardRepo.delete(card.id)
+        refresh()
     }
 }

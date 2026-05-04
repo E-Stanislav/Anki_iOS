@@ -41,7 +41,17 @@ final class DeckRepository: DeckRepositoryProtocol {
     }
 
     func delete(_ id: UUID) {
+        db.execute("DELETE FROM card_schedules WHERE card_id IN (SELECT id FROM cards WHERE deck_id = ?)", parameters: [id.uuidString])
+        db.execute("DELETE FROM cards WHERE deck_id = ?", parameters: [id.uuidString])
         db.execute("DELETE FROM decks WHERE id = ?", parameters: [id.uuidString])
+    }
+
+    func deleteAll() {
+        db.execute("PRAGMA foreign_keys = OFF")
+        db.execute("DELETE FROM card_schedules")
+        db.execute("DELETE FROM cards")
+        db.execute("DELETE FROM decks")
+        db.execute("PRAGMA foreign_keys = ON")
     }
 
     func getStats(for deckId: UUID) -> DeckStats? {

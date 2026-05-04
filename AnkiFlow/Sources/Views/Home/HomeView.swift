@@ -45,8 +45,29 @@ struct HomeView: View {
                     decks: viewModel.decks,
                     onDeckTap: { deck in
                         viewModel.selectedDeck = deck
+                    },
+                    onDeckDelete: { deck in
+                        viewModel.deckToDelete = deck
                     }
                 )
+                .alert("Delete Deck?", isPresented: .init(
+                    get: { viewModel.deckToDelete != nil },
+                    set: { if !$0 { viewModel.deckToDelete = nil } }
+                )) {
+                    Button("Cancel", role: .cancel) {
+                        viewModel.deckToDelete = nil
+                    }
+                    Button("Delete", role: .destructive) {
+                        if let deck = viewModel.deckToDelete {
+                            viewModel.deleteDeck(deck)
+                        }
+                        viewModel.deckToDelete = nil
+                    }
+                } message: {
+                    if let deck = viewModel.deckToDelete {
+                        Text("Are you sure you want to delete \"\(deck.name)\"? All cards in this deck will be permanently deleted.")
+                    }
+                }
             }
             .padding()
         }
@@ -121,6 +142,7 @@ struct StatBox: View {
 struct DeckListSection: View {
     let decks: [Deck]
     let onDeckTap: (Deck) -> Void
+    let onDeckDelete: (Deck) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -136,8 +158,16 @@ struct DeckListSection: View {
             } else {
                 ForEach(decks) { deck in
                     DeckRowView(deck: deck)
+                        .contentShape(Rectangle())
                         .onTapGesture {
                             onDeckTap(deck)
+                        }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            Button(role: .destructive) {
+                                onDeckDelete(deck)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
                         }
                 }
             }

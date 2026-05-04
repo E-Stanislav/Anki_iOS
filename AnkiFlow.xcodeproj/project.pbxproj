@@ -12,6 +12,7 @@
 		26851CE87EBAC13A14DBC054 /* ReviewLogRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E97C996EB3C4A5BAB8CD280 /* ReviewLogRepository.swift */; };
 		33C25FE75DF4FF45642FF54B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E843B7B10483636075051589 /* SettingsView.swift */; };
 		3552F33F9F362090AB3838EE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20352D858ED4D544E615BF3 /* HomeView.swift */; };
+		35EDEDA5981BA2878CC4AC32 /* AnkiFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878AE270AE9676B3CF2C2CB3 /* AnkiFlowTests.swift */; };
 		38A79E76347006D860E513E6 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAECA2418BFF2CFD5DD8A0E /* Card.swift */; };
 		427893E561EDC109FF4E4D5C /* AnkiFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FC55BA43DBC04A2A7B165C /* AnkiFlowApp.swift */; };
 		4A50852D25F4052171F910AE /* StudySessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FF66D48FDF6DA6D7231C76 /* StudySessionViewModel.swift */; };
@@ -38,20 +39,33 @@
 		E6CA87B11DEF71612D8C7399 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472FBF8DDC6C41E7DDC07F4 /* HomeViewModel.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		13D802B8E48AF27F82DCC9F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4F1752765BC1A7EF9655920 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BAEF28DBDD81702205B47706;
+			remoteInfo = AnkiFlow;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		05FF66D48FDF6DA6D7231C76 /* StudySessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySessionViewModel.swift; sourceTree = "<group>"; };
 		09818C1632A99497914BD641 /* StudySessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySessionView.swift; sourceTree = "<group>"; };
 		1465AF726B61B556E55E665D /* ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportView.swift; sourceTree = "<group>"; };
 		16841DE697B1E0F589368097 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		27DF2262B3843F4EEB2B8AEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		32BFF98B5531D33819D4EC43 /* CardEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEditorView.swift; sourceTree = "<group>"; };
 		3C2C763903220B43D4C318CB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		54C7FFB316509E6AB8D80CF5 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		55AD97AC540F88157DEA9982 /* AnkiFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnkiFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		582236EFA26C341AFC09461A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnkiFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65493D436DAC0E4A78ABEE7A /* ApkgImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApkgImporter.swift; sourceTree = "<group>"; };
 		6718BE0B479CF825AFF4E0B1 /* SM2Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM2Scheduler.swift; sourceTree = "<group>"; };
 		7699DBB55C8CB569373C6AA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		868D225B3081989DF1ADB4B2 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		878AE270AE9676B3CF2C2CB3 /* AnkiFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnkiFlowTests.swift; sourceTree = "<group>"; };
 		91EF331418FC86C7442930FE /* ReviewLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewLog.swift; sourceTree = "<group>"; };
 		9332FFBD008A92E7489F8857 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9CA603292B1F75FFF6358180 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
@@ -124,6 +138,15 @@
 				A53B3555D010670F3D6E5EF5 /* DeckDetailView.swift */,
 			);
 			path = Deck;
+			sourceTree = "<group>";
+		};
+		46AEE032084136A9B4CA03B7 /* AnkiFlowTests */ = {
+			isa = PBXGroup;
+			children = (
+				878AE270AE9676B3CF2C2CB3 /* AnkiFlowTests.swift */,
+				27DF2262B3843F4EEB2B8AEE /* Info.plist */,
+			);
+			path = AnkiFlowTests;
 			sourceTree = "<group>";
 		};
 		4BC254002DF4F48831D7E660 /* Import */ = {
@@ -252,6 +275,7 @@
 		D40902CB568EDEA4BBC9F023 = {
 			isa = PBXGroup;
 			children = (
+				46AEE032084136A9B4CA03B7 /* AnkiFlowTests */,
 				BC9F9A4D1C1AE0087137D07E /* Resources */,
 				AA1F4F0E7DB764FA48B0D937 /* Sources */,
 				F583C3570D2061EBC5D5C1CE /* Products */,
@@ -288,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */,
+				55AD97AC540F88157DEA9982 /* AnkiFlowTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -325,6 +350,24 @@
 			productReference = 5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C57DA51F86C14516FFA15855 /* AnkiFlowTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3AC88FD1C828590A73E03C89 /* Build configuration list for PBXNativeTarget "AnkiFlowTests" */;
+			buildPhases = (
+				1C8C70FA4C61779FF4604083 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9B82984D41EF037394BF8487 /* PBXTargetDependency */,
+			);
+			name = AnkiFlowTests;
+			packageProductDependencies = (
+			);
+			productName = AnkiFlowTests;
+			productReference = 55AD97AC540F88157DEA9982 /* AnkiFlowTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -335,6 +378,9 @@
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					BAEF28DBDD81702205B47706 = {
+						ProvisioningStyle = Automatic;
+					};
+					C57DA51F86C14516FFA15855 = {
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -354,6 +400,7 @@
 			projectRoot = "";
 			targets = (
 				BAEF28DBDD81702205B47706 /* AnkiFlow */,
+				C57DA51F86C14516FFA15855 /* AnkiFlowTests */,
 			);
 		};
 /* End PBXProject section */
@@ -371,6 +418,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1C8C70FA4C61779FF4604083 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35EDEDA5981BA2878CC4AC32 /* AnkiFlowTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		42A4ED2AA4C8E9B9132EBB8A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -407,7 +462,33 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9B82984D41EF037394BF8487 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BAEF28DBDD81702205B47706 /* AnkiFlow */;
+			targetProxy = 13D802B8E48AF27F82DCC9F3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		14F359D696F9F1F194BFC09A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
+				INFOPLIST_FILE = AnkiFlowTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app.tests2;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnkiFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnkiFlow";
+			};
+			name = Release;
+		};
 		2206A0BF2A2E294DB2FF6364 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -579,6 +660,24 @@
 			};
 			name = Release;
 		};
+		E10365B8CE5526DE5D39AAB7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
+				INFOPLIST_FILE = AnkiFlowTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app.tests2;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnkiFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnkiFlow";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -587,6 +686,15 @@
 			buildConfigurations = (
 				59FF965AF29EAE00CB8B8CF4 /* Debug */,
 				CEE5A78CB2BE930B1762204E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3AC88FD1C828590A73E03C89 /* Build configuration list for PBXNativeTarget "AnkiFlowTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E10365B8CE5526DE5D39AAB7 /* Debug */,
+				14F359D696F9F1F194BFC09A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

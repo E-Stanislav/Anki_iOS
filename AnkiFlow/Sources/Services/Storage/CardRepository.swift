@@ -32,13 +32,11 @@ final class CardRepository: CardRepositoryProtocol {
         LIMIT ?
         """
         let now = Date().timeIntervalSince1970
-        print("DEBUG getDueCards: deckId=\(deckId), now=\(now), limit=\(limit)")
         let rows = db.query(sql, parameters: [
             deckId.uuidString,
             now,
             limit
         ])
-        print("DEBUG getDueCards: found \(rows.count) cards")
         return rows.compactMap { decodeCard(from: $0) }
     }
 
@@ -47,6 +45,7 @@ final class CardRepository: CardRepositoryProtocol {
         INSERT OR REPLACE INTO cards (id, note_id, deck_id, template_index, front, back, created_at, updated_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """
+
         db.execute(sql, parameters: [
             card.id.uuidString,
             card.noteId.uuidString,
@@ -64,8 +63,7 @@ final class CardRepository: CardRepositoryProtocol {
         INSERT OR REPLACE INTO card_schedules (card_id, status, due, interval, ease_factor, reps, lapses)
         VALUES (?, ?, ?, ?, ?, ?, ?)
         """
-        print("DEBUG saveSchedule: cardId=\(schedule.cardId), status=\(schedule.status.rawValue), due=\(schedule.due)")
-        let success = db.execute(sql, parameters: [
+        db.execute(sql, parameters: [
             schedule.cardId.uuidString,
             schedule.status.rawValue,
             schedule.due.timeIntervalSince1970,
@@ -74,7 +72,6 @@ final class CardRepository: CardRepositoryProtocol {
             schedule.reps,
             schedule.lapses
         ])
-        print("DEBUG saveSchedule: success=\(success)")
     }
 
     func getSchedule(for cardId: UUID) -> CardSchedule? {

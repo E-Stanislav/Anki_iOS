@@ -160,13 +160,10 @@ final class ImportViewModel: ObservableObject {
             return
         }
 
-        defer {
-            url.stopAccessingSecurityScopedResource()
-        }
-
         Task {
             do {
-                let result = try await importer.importFile(at: url, options: ImportOptions())
+                let localURL = try copyToLocal(url: url)
+                let result = try await importer.importFile(at: localURL, options: ImportOptions())
                 importResult = result
             } catch {
                 importResult = ImportResult(
@@ -179,6 +176,19 @@ final class ImportViewModel: ObservableObject {
                 )
             }
             isImporting = false
+            url.stopAccessingSecurityScopedResource()
         }
+    }
+
+    private func copyToLocal(url: URL) throws -> URL {
+        let tempDir = FileManager.default.temporaryDirectory
+        let localURL = tempDir.appendingPathComponent(url.lastPathComponent)
+
+        if FileManager.default.fileExists(atPath: localURL.path) {
+            try FileManager.default.removeItem(at: localURL)
+        }
+
+        try FileManager.default.copyItem(at: url, to: localURL)
+        return localURL
     }
 }

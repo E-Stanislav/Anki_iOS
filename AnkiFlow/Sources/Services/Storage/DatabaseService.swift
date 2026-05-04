@@ -6,9 +6,11 @@ final class DatabaseService {
 
     private var db: OpaquePointer?
     private let queue = DispatchQueue(label: "com.ankiflow.database", qos: .userInitiated)
+    private let schemaVersion = 3
 
     private init() {
         openDatabase()
+        migrateSchemaIfNeeded()
         createTables()
     }
 
@@ -24,8 +26,47 @@ final class DatabaseService {
         if sqlite3_open(fileURL.path, &db) != SQLITE_OK {
             print("Error opening database")
         }
-        // Enable foreign keys
         execute("PRAGMA foreign_keys = ON")
+    }
+
+    private func migrateSchemaIfNeeded() {
+        let currentVersion = getUserVersion()
+        if currentVersion < schemaVersion {
+            dropAllTablesAndRecreate()
+            setUserVersion(schemaVersion)
+        }
+    }
+
+    private func dropAllTablesAndRecreate() {
+        sqlite3_close(db)
+        let fileURL = FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("ankiflow.sqlite")
+        try? FileManager.default.removeItem(at: fileURL)
+        sqlite3_open(fileURL.path, &db)
+        execute("PRAGMA foreign_keys = OFF")
+    }
+
+    private func getUserVersion() -> Int {
+        let rows = query("PRAGMA user_version")
+        return rows.first?["user_version"] as? Int ?? 0
+    }
+
+    private func setUserVersion(_ version: Int) {
+        execute("PRAGMA user_version = \(version)")
+    }
+
+    private func dropAllTables() {
+        execute("DROP TABLE IF EXISTS card_schedules")
+        execute("DROP TABLE IF EXISTS cards")
+        execute("DROP TABLE IF EXISTS notes")
+        execute("DROP TABLE IF EXISTS decks")
+        execute("DROP TABLE IF EXISTS notetypes")
+        execute("DROP TABLE IF EXISTS revlog")
+        execute("DROP TABLE IF EXISTS graves")
+        execute("DROP TABLE IF EXISTS media_files")
+        execute("DROP TABLE IF EXISTS import_jobs")
+        execute("DROP TABLE IF EXISTS sync_state")
     }
 
     private func createTables() {
@@ -60,14 +101,13 @@ final class DatabaseService {
         let createCards = """
         CREATE TABLE IF NOT EXISTS cards (
             id TEXT PRIMARY KEY,
-            note_id TEXT NOT NULL,
+            note_id TEXT,
             deck_id TEXT NOT NULL,
             template_index INTEGER DEFAULT 0,
             front TEXT NOT NULL,
             back TEXT NOT NULL,
             created_at REAL NOT NULL,
             updated_at REAL NOT NULL,
-            FOREIGN KEY (note_id) REFERENCES notes(id),
             FOREIGN KEY (deck_id) REFERENCES decks(id)
         );
         """
@@ -184,7 +224,10 @@ final class DatabaseService {
         for (index, param) in parameters.enumerated() {
             let idx = Int32(index + 1)
             if let value = param as? String {
-                sqlite3_bind_text(statement, idx, value, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                let transient = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
+                value.withCString { cString in
+                    sqlite3_bind_text(statement, idx, cString, -1, transient)
+                }
             } else if let value = param as? Int {
                 sqlite3_bind_int64(statement, idx, Int64(value))
             } else if let value = param as? Int64 {
@@ -200,7 +243,8 @@ final class DatabaseService {
 
         let result = sqlite3_step(statement)
         if result != SQLITE_DONE {
-            print("DB ERROR: Step failed with result \(result) for SQL: \(sql)")
+            let errMsg = String(cString: sqlite3_errmsg(db))
+            print("DB ERROR: Step failed with result \(result) for SQL: \(sql), error: \(errMsg)")
         }
         return result == SQLITE_DONE
     }
@@ -216,7 +260,10 @@ final class DatabaseService {
         for (index, param) in parameters.enumerated() {
             let idx = Int32(index + 1)
             if let value = param as? String {
-                sqlite3_bind_text(statement, idx, value, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                let transient = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
+                value.withCString { cString in
+                    sqlite3_bind_text(statement, idx, cString, -1, transient)
+                }
             } else if let value = param as? Int {
                 sqlite3_bind_int64(statement, idx, Int64(value))
             } else if let value = param as? Int64 {
@@ -253,9 +300,6 @@ final class DatabaseService {
             results.append(row)
         }
         if results.isEmpty {
-            print("DB QUERY: \(sql) with params \(parameters) returned 0 rows")
-        } else {
-            print("DB QUERY: \(sql) returned \(results.count) rows")
         }
         return results
     }

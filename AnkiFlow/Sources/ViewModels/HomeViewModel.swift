@@ -9,6 +9,7 @@ final class HomeViewModel: ObservableObject {
     @Published var showingCreateDeck = false
     @Published var showingSearch = false
     @Published var selectedDeck: Deck?
+    @Published var deckToDelete: Deck?
 
     private let deckRepo = DeckRepository()
     private let cardRepo = CardRepository()
@@ -26,6 +27,11 @@ final class HomeViewModel: ObservableObject {
     }
 
     func refresh() {
+        loadData()
+    }
+
+    func deleteDeck(_ deck: Deck) {
+        deckRepo.delete(deck.id)
         loadData()
     }
 
