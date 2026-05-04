@@ -19,11 +19,33 @@ final class HomeViewModel: ObservableObject {
 
     func loadData() {
         decks = deckRepo.getAll()
+        if decks.isEmpty {
+            createSampleDeck()
+        }
         calculateTodayStats()
     }
 
     func refresh() {
         loadData()
+    }
+
+    func createSampleDeck() {
+        let sampleDeck = Deck(name: "Sample Deck", description: "Demo deck with sample cards")
+        deckRepo.save(sampleDeck)
+
+        let sampleCards = [
+            Card(noteId: UUID(), deckId: sampleDeck.id, front: "Hello", back: "A greeting"),
+            Card(noteId: UUID(), deckId: sampleDeck.id, front: "Goodbye", back: "A farewell"),
+            Card(noteId: UUID(), deckId: sampleDeck.id, front: "Thank you", back: "An expression of gratitude")
+        ]
+
+        for card in sampleCards {
+            cardRepo.save(card)
+            let schedule = CardSchedule(cardId: card.id)
+            cardRepo.saveSchedule(schedule)
+        }
+
+        decks = deckRepo.getAll()
     }
 
     private func calculateTodayStats() {

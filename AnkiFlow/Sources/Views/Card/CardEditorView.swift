@@ -144,6 +144,11 @@ final class CardEditorViewModel: ObservableObject {
 
     func loadDecks() {
         decks = deckRepo.getAll()
+        if decks.isEmpty {
+            let defaultDeck = Deck(name: "My Deck", description: "")
+            deckRepo.save(defaultDeck)
+            decks = [defaultDeck]
+        }
         if selectedDeckId == nil, let first = decks.first {
             selectedDeckId = first.id
         }
@@ -153,7 +158,10 @@ final class CardEditorViewModel: ObservableObject {
     }
 
     func saveCard() {
-        guard let deckId = selectedDeckId else { return }
+        guard let deckId = selectedDeckId else {
+            print("DEBUG saveCard: selectedDeckId is nil!")
+            return
+        }
 
         let card = Card(
             noteId: UUID(),
@@ -161,9 +169,11 @@ final class CardEditorViewModel: ObservableObject {
             front: front.trimmingCharacters(in: .whitespacesAndNewlines),
             back: back.trimmingCharacters(in: .whitespacesAndNewlines)
         )
+        print("DEBUG saveCard: card.id=\(card.id), deckId=\(deckId), front=\(card.front)")
         cardRepo.save(card)
 
         let schedule = CardSchedule(cardId: card.id)
+        print("DEBUG saveCard: schedule.cardId=\(schedule.cardId), status=\(schedule.status), due=\(schedule.due)")
         cardRepo.saveSchedule(schedule)
 
         front = ""

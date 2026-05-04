@@ -24,6 +24,8 @@ final class DatabaseService {
         if sqlite3_open(fileURL.path, &db) != SQLITE_OK {
             print("Error opening database")
         }
+        // Enable foreign keys
+        execute("PRAGMA foreign_keys = ON")
     }
 
     private func createTables() {
@@ -174,6 +176,7 @@ final class DatabaseService {
     func execute(_ sql: String, parameters: [Any?] = []) -> Bool {
         var statement: OpaquePointer?
         guard sqlite3_prepare_v2(db, sql, -1, &statement, nil) == SQLITE_OK else {
+            print("DB ERROR: Failed to prepare statement: \(sql)")
             return false
         }
         defer { sqlite3_finalize(statement) }
@@ -195,12 +198,17 @@ final class DatabaseService {
             }
         }
 
-        return sqlite3_step(statement) == SQLITE_DONE
+        let result = sqlite3_step(statement)
+        if result != SQLITE_DONE {
+            print("DB ERROR: Step failed with result \(result) for SQL: \(sql)")
+        }
+        return result == SQLITE_DONE
     }
 
     func query(_ sql: String, parameters: [Any?] = []) -> [[String: Any]] {
         var statement: OpaquePointer?
         guard sqlite3_prepare_v2(db, sql, -1, &statement, nil) == SQLITE_OK else {
+            print("DB ERROR: Failed to prepare query: \(sql)")
             return []
         }
         defer { sqlite3_finalize(statement) }
@@ -243,6 +251,11 @@ final class DatabaseService {
                 }
             }
             results.append(row)
+        }
+        if results.isEmpty {
+            print("DB QUERY: \(sql) with params \(parameters) returned 0 rows")
+        } else {
+            print("DB QUERY: \(sql) returned \(results.count) rows")
         }
         return results
     }
