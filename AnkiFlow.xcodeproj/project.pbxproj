@@ -1,0 +1,605 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0468B3DC8176A846EB8F493E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582236EFA26C341AFC09461A /* AppState.swift */; };
+		15D9DD3D981FEAFF441A5E6F /* StudySessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09818C1632A99497914BD641 /* StudySessionView.swift */; };
+		26851CE87EBAC13A14DBC054 /* ReviewLogRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E97C996EB3C4A5BAB8CD280 /* ReviewLogRepository.swift */; };
+		33C25FE75DF4FF45642FF54B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E843B7B10483636075051589 /* SettingsView.swift */; };
+		3552F33F9F362090AB3838EE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20352D858ED4D544E615BF3 /* HomeView.swift */; };
+		38A79E76347006D860E513E6 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAECA2418BFF2CFD5DD8A0E /* Card.swift */; };
+		427893E561EDC109FF4E4D5C /* AnkiFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FC55BA43DBC04A2A7B165C /* AnkiFlowApp.swift */; };
+		4A50852D25F4052171F910AE /* StudySessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FF66D48FDF6DA6D7231C76 /* StudySessionViewModel.swift */; };
+		517D66ADBD75C71DB821945E /* DeckDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53B3555D010670F3D6E5EF5 /* DeckDetailView.swift */; };
+		6800518D721E829EB68B3852 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7699DBB55C8CB569373C6AA6 /* ContentView.swift */; };
+		7336F63A2958B8CFD65F212A /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868D225B3081989DF1ADB4B2 /* DatabaseService.swift */; };
+		75A138C0950724DE80220D01 /* ReviewLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EF331418FC86C7442930FE /* ReviewLog.swift */; };
+		76BB63B9F4536750660A27BB /* SM2Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6718BE0B479CF825AFF4E0B1 /* SM2Scheduler.swift */; };
+		82A6ACA7340118C0A528C1EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16841DE697B1E0F589368097 /* Assets.xcassets */; };
+		838F0DE2C3F17465050138E3 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2C763903220B43D4C318CB /* OnboardingView.swift */; };
+		9356F48431F1EAD7745B54EF /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F5CCC2D41B8198AA821DF6 /* MainTabView.swift */; };
+		9F730474D3E9BDC6AD6F0755 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C7FFB316509E6AB8D80CF5 /* StatsView.swift */; };
+		AA9D9B85F7014D3A5C8C7C53 /* DeckRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED84B4447A664EB08A62A2A0 /* DeckRepository.swift */; };
+		B70B73BE9E150310DAF44196 /* CreateDeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A931A7BBC3D1575AD45564BB /* CreateDeckView.swift */; };
+		BF2550E4D1C378FC61BD3B2C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CBF4E62E936999C4E284D /* SceneDelegate.swift */; };
+		C0AB3A6A471B1936555AFBD8 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA603292B1F75FFF6358180 /* Note.swift */; };
+		C23E64BDC31535DB3757F3B4 /* CardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B01D9B6B12EEAA36B30B87 /* CardRepository.swift */; };
+		C3756541F741D0E377975CA2 /* ApkgImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65493D436DAC0E4A78ABEE7A /* ApkgImporter.swift */; };
+		C3762FD238F8BD2129FD0670 /* ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1465AF726B61B556E55E665D /* ImportView.swift */; };
+		C9ACD2295AF71A8CDA42908E /* CardEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BFF98B5531D33819D4EC43 /* CardEditorView.swift */; };
+		CE5EA844D1526F4EAF39ACB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9332FFBD008A92E7489F8857 /* Assets.xcassets */; };
+		D4E7047F7ADDB234C22FB1CB /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63A61AE19A8E7D1C9FD824D /* Deck.swift */; };
+		E07A84630048EE06349E6B3E /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC578AFAEC0CB05B7254460E /* Media.swift */; };
+		E6CA87B11DEF71612D8C7399 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472FBF8DDC6C41E7DDC07F4 /* HomeViewModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		05FF66D48FDF6DA6D7231C76 /* StudySessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySessionViewModel.swift; sourceTree = "<group>"; };
+		09818C1632A99497914BD641 /* StudySessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySessionView.swift; sourceTree = "<group>"; };
+		1465AF726B61B556E55E665D /* ImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportView.swift; sourceTree = "<group>"; };
+		16841DE697B1E0F589368097 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		32BFF98B5531D33819D4EC43 /* CardEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEditorView.swift; sourceTree = "<group>"; };
+		3C2C763903220B43D4C318CB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		54C7FFB316509E6AB8D80CF5 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		582236EFA26C341AFC09461A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AnkiFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65493D436DAC0E4A78ABEE7A /* ApkgImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApkgImporter.swift; sourceTree = "<group>"; };
+		6718BE0B479CF825AFF4E0B1 /* SM2Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM2Scheduler.swift; sourceTree = "<group>"; };
+		7699DBB55C8CB569373C6AA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		868D225B3081989DF1ADB4B2 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		91EF331418FC86C7442930FE /* ReviewLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewLog.swift; sourceTree = "<group>"; };
+		9332FFBD008A92E7489F8857 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9CA603292B1F75FFF6358180 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		9E97C996EB3C4A5BAB8CD280 /* ReviewLogRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewLogRepository.swift; sourceTree = "<group>"; };
+		A11CBF4E62E936999C4E284D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A53B3555D010670F3D6E5EF5 /* DeckDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckDetailView.swift; sourceTree = "<group>"; };
+		A931A7BBC3D1575AD45564BB /* CreateDeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDeckView.swift; sourceTree = "<group>"; };
+		B8F5CCC2D41B8198AA821DF6 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		C20352D858ED4D544E615BF3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		C472FBF8DDC6C41E7DDC07F4 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		CC578AFAEC0CB05B7254460E /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
+		D6FC55BA43DBC04A2A7B165C /* AnkiFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnkiFlowApp.swift; sourceTree = "<group>"; };
+		E63A61AE19A8E7D1C9FD824D /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
+		E843B7B10483636075051589 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		EAAECA2418BFF2CFD5DD8A0E /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		EB99A91BF02C77A927A6A3F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		ED84B4447A664EB08A62A2A0 /* DeckRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckRepository.swift; sourceTree = "<group>"; };
+		F2B01D9B6B12EEAA36B30B87 /* CardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRepository.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		021E2196682BC49913042129 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				32BFF98B5531D33819D4EC43 /* CardEditorView.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		0EF18A6A8A7192B2C56E9AC3 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E843B7B10483636075051589 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		144916F71414B33723B85276 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		150D7637B5D9B1620001BA02 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A931A7BBC3D1575AD45564BB /* CreateDeckView.swift */,
+				C20352D858ED4D544E615BF3 /* HomeView.swift */,
+				1465AF726B61B556E55E665D /* ImportView.swift */,
+				B8F5CCC2D41B8198AA821DF6 /* MainTabView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		266E88371EB362E8A129162A /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D6FC55BA43DBC04A2A7B165C /* AnkiFlowApp.swift */,
+				582236EFA26C341AFC09461A /* AppState.swift */,
+				7699DBB55C8CB569373C6AA6 /* ContentView.swift */,
+				A11CBF4E62E936999C4E284D /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		40F36F51CDA2680E978AB9AC /* Deck */ = {
+			isa = PBXGroup;
+			children = (
+				A53B3555D010670F3D6E5EF5 /* DeckDetailView.swift */,
+			);
+			path = Deck;
+			sourceTree = "<group>";
+		};
+		4BC254002DF4F48831D7E660 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				65493D436DAC0E4A78ABEE7A /* ApkgImporter.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		4C41E11C788A6FF819A665E9 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		59FC37BD0FC2171DC82DEDA7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CD2AC5B8D1E77C6006C6B0E7 /* Localization */,
+				16841DE697B1E0F589368097 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6147DE10FD3938A7A93E6BA2 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
+		65746BF985E0A5531BF2EBDA /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				54C7FFB316509E6AB8D80CF5 /* StatsView.swift */,
+			);
+			path = Stats;
+			sourceTree = "<group>";
+		};
+		6EEB34475C278F1FA5E1F914 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C472FBF8DDC6C41E7DDC07F4 /* HomeViewModel.swift */,
+				05FF66D48FDF6DA6D7231C76 /* StudySessionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		9C0E36B9F14AE6FE424BF0B9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				021E2196682BC49913042129 /* Card */,
+				4C41E11C788A6FF819A665E9 /* Components */,
+				40F36F51CDA2680E978AB9AC /* Deck */,
+				150D7637B5D9B1620001BA02 /* Home */,
+				B6A5011593688A7CAEF9BE3A /* Onboarding */,
+				A358681B2547C1419DDBBA16 /* Review */,
+				0EF18A6A8A7192B2C56E9AC3 /* Settings */,
+				65746BF985E0A5531BF2EBDA /* Stats */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A358681B2547C1419DDBBA16 /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				09818C1632A99497914BD641 /* StudySessionView.swift */,
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
+		AA1F4F0E7DB764FA48B0D937 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				266E88371EB362E8A129162A /* App */,
+				E3E408C66AFAB7E8A96B6EDC /* Extensions */,
+				FCB3EB6505EFA9B4BF6D3770 /* Models */,
+				59FC37BD0FC2171DC82DEDA7 /* Resources */,
+				D3402D003DAC814E214198C0 /* Services */,
+				144916F71414B33723B85276 /* Utilities */,
+				6EEB34475C278F1FA5E1F914 /* ViewModels */,
+				9C0E36B9F14AE6FE424BF0B9 /* Views */,
+			);
+			name = Sources;
+			path = AnkiFlow/Sources;
+			sourceTree = "<group>";
+		};
+		B6A5011593688A7CAEF9BE3A /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				3C2C763903220B43D4C318CB /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		BC9F9A4D1C1AE0087137D07E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9332FFBD008A92E7489F8857 /* Assets.xcassets */,
+				EB99A91BF02C77A927A6A3F0 /* Info.plist */,
+			);
+			name = Resources;
+			path = AnkiFlow/Resources;
+			sourceTree = "<group>";
+		};
+		CD2AC5B8D1E77C6006C6B0E7 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		D3402D003DAC814E214198C0 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4BC254002DF4F48831D7E660 /* Import */,
+				D7633FBF916350277BD4ECC3 /* Scheduler */,
+				EF4B0C4C5D1272453FFCBE84 /* Storage */,
+				6147DE10FD3938A7A93E6BA2 /* Sync */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D40902CB568EDEA4BBC9F023 = {
+			isa = PBXGroup;
+			children = (
+				BC9F9A4D1C1AE0087137D07E /* Resources */,
+				AA1F4F0E7DB764FA48B0D937 /* Sources */,
+				F583C3570D2061EBC5D5C1CE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D7633FBF916350277BD4ECC3 /* Scheduler */ = {
+			isa = PBXGroup;
+			children = (
+				6718BE0B479CF825AFF4E0B1 /* SM2Scheduler.swift */,
+			);
+			path = Scheduler;
+			sourceTree = "<group>";
+		};
+		E3E408C66AFAB7E8A96B6EDC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		EF4B0C4C5D1272453FFCBE84 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				F2B01D9B6B12EEAA36B30B87 /* CardRepository.swift */,
+				868D225B3081989DF1ADB4B2 /* DatabaseService.swift */,
+				ED84B4447A664EB08A62A2A0 /* DeckRepository.swift */,
+				9E97C996EB3C4A5BAB8CD280 /* ReviewLogRepository.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		F583C3570D2061EBC5D5C1CE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FCB3EB6505EFA9B4BF6D3770 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EAAECA2418BFF2CFD5DD8A0E /* Card.swift */,
+				E63A61AE19A8E7D1C9FD824D /* Deck.swift */,
+				CC578AFAEC0CB05B7254460E /* Media.swift */,
+				9CA603292B1F75FFF6358180 /* Note.swift */,
+				91EF331418FC86C7442930FE /* ReviewLog.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BAEF28DBDD81702205B47706 /* AnkiFlow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F82ABD78E70B4F34CEA667E /* Build configuration list for PBXNativeTarget "AnkiFlow" */;
+			buildPhases = (
+				42A4ED2AA4C8E9B9132EBB8A /* Sources */,
+				E7D859546EF8ECF533717001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AnkiFlow;
+			packageProductDependencies = (
+			);
+			productName = AnkiFlow;
+			productReference = 5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F4F1752765BC1A7EF9655920 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					BAEF28DBDD81702205B47706 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 32924C28A0AD8BB7EEB40947 /* Build configuration list for PBXProject "AnkiFlow" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = D40902CB568EDEA4BBC9F023;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F583C3570D2061EBC5D5C1CE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BAEF28DBDD81702205B47706 /* AnkiFlow */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E7D859546EF8ECF533717001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82A6ACA7340118C0A528C1EF /* Assets.xcassets in Resources */,
+				CE5EA844D1526F4EAF39ACB4 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42A4ED2AA4C8E9B9132EBB8A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				427893E561EDC109FF4E4D5C /* AnkiFlowApp.swift in Sources */,
+				C3756541F741D0E377975CA2 /* ApkgImporter.swift in Sources */,
+				0468B3DC8176A846EB8F493E /* AppState.swift in Sources */,
+				38A79E76347006D860E513E6 /* Card.swift in Sources */,
+				C9ACD2295AF71A8CDA42908E /* CardEditorView.swift in Sources */,
+				C23E64BDC31535DB3757F3B4 /* CardRepository.swift in Sources */,
+				6800518D721E829EB68B3852 /* ContentView.swift in Sources */,
+				B70B73BE9E150310DAF44196 /* CreateDeckView.swift in Sources */,
+				7336F63A2958B8CFD65F212A /* DatabaseService.swift in Sources */,
+				D4E7047F7ADDB234C22FB1CB /* Deck.swift in Sources */,
+				517D66ADBD75C71DB821945E /* DeckDetailView.swift in Sources */,
+				AA9D9B85F7014D3A5C8C7C53 /* DeckRepository.swift in Sources */,
+				3552F33F9F362090AB3838EE /* HomeView.swift in Sources */,
+				E6CA87B11DEF71612D8C7399 /* HomeViewModel.swift in Sources */,
+				C3762FD238F8BD2129FD0670 /* ImportView.swift in Sources */,
+				9356F48431F1EAD7745B54EF /* MainTabView.swift in Sources */,
+				E07A84630048EE06349E6B3E /* Media.swift in Sources */,
+				C0AB3A6A471B1936555AFBD8 /* Note.swift in Sources */,
+				838F0DE2C3F17465050138E3 /* OnboardingView.swift in Sources */,
+				75A138C0950724DE80220D01 /* ReviewLog.swift in Sources */,
+				26851CE87EBAC13A14DBC054 /* ReviewLogRepository.swift in Sources */,
+				76BB63B9F4536750660A27BB /* SM2Scheduler.swift in Sources */,
+				BF2550E4D1C378FC61BD3B2C /* SceneDelegate.swift in Sources */,
+				33C25FE75DF4FF45642FF54B /* SettingsView.swift in Sources */,
+				9F730474D3E9BDC6AD6F0755 /* StatsView.swift in Sources */,
+				15D9DD3D981FEAFF441A5E6F /* StudySessionView.swift in Sources */,
+				4A50852D25F4052171F910AE /* StudySessionViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2206A0BF2A2E294DB2FF6364 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AnkiFlow/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AnkiFlow;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		281226E84AC9B5D6DADE5247 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AnkiFlow/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AnkiFlow;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		59FF965AF29EAE00CB8B8CF4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		CEE5A78CB2BE930B1762204E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		32924C28A0AD8BB7EEB40947 /* Build configuration list for PBXProject "AnkiFlow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59FF965AF29EAE00CB8B8CF4 /* Debug */,
+				CEE5A78CB2BE930B1762204E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4F82ABD78E70B4F34CEA667E /* Build configuration list for PBXNativeTarget "AnkiFlow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				281226E84AC9B5D6DADE5247 /* Debug */,
+				2206A0BF2A2E294DB2FF6364 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F4F1752765BC1A7EF9655920 /* Project object */;
+}

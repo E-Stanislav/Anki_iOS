@@ -1,0 +1,89 @@
+name: AnkiFlow
+options:
+  bundleIdPrefix: com.ankiflow
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+  groupSortPosition: top
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  AnkiFlow:
+    type: application
+    platform: iOS
+    sources:
+      - path: AnkiFlow/Sources
+        type: group
+      - path: AnkiFlow/Resources
+        type: group
+    settings:
+      base:
+        INFOPLIST_FILE: AnkiFlow/Resources/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ankiflow.app
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        GENERATE_INFOPLIST_FILE: "NO"
+        INFOPLIST_KEY_CFBundleDisplayName: AnkiFlow
+        INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.education"
+    info:
+      path: AnkiFlow/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: AnkiFlow
+        CFBundleName: AnkiFlow
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundlePackageType: APPL
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        LSRequiresIPhoneOS: true
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIApplicationSupportsIndirectInputEvents: true
+        UIRequiresFullScreen: false
+        UIStatusBarStyle: UIStatusBarStyleDefault
+        UIViewControllerBasedStatusBarAppearance: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+          UISceneConfigurations:
+            UIWindowSceneSessionRoleApplication:
+              - UISceneConfigurationName: Default Configuration
+                UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
+        UTImportedTypeDeclarations:
+          - UTTypeIdentifier: com.ankiflow.apkg
+            UTTypeDescription: Anki Package
+            UTTypeConformsTo:
+              - public.zip-archive
+            UTTypeTagSpecification:
+              public.filename-extension:
+                - apkg
+              public.mime-type:
+                - application/x-apkg
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Anki Package
+            CFBundleTypeRole: Viewer
+            LSItemContentTypes:
+              - com.ankiflow.apkg
+            LSHandlerRank: Default
+            CFBundleTypeExtensions:
+              - apkg
+        LSSupportsOpeningDocumentsInPlace: true
+        UISupportsDocumentBrowser: true
+        NSPhotoLibraryUsageDescription: "AnkiFlow needs access to your photos to add images to flashcards."
+        NSMicrophoneUsageDescription: "AnkiFlow needs microphone access to record audio for flashcards."
