@@ -414,6 +414,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AnkiFlow/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = AnkiFlow;
@@ -422,7 +423,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app2;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

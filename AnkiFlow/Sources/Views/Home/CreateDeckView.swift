@@ -6,6 +6,7 @@ struct CreateDeckView: View {
     @State private var deckDescription = ""
 
     private let deckRepo = DeckRepository()
+    var onDeckCreated: (() -> Void)?
 
     var body: some View {
         NavigationStack {
@@ -26,6 +27,7 @@ struct CreateDeckView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Create") {
                         createDeck()
+                        onDeckCreated?()
                         dismiss()
                     }
                     .disabled(deckName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

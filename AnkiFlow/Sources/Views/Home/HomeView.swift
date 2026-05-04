@@ -2,16 +2,44 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
+    @State private var showingCreateDeck = false
 
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
                 TodayOverviewCard(stats: viewModel.todayStats)
 
-                QuickActionsCard(
-                    onImport: { viewModel.showingImportPicker = true },
-                    onCreateDeck: { viewModel.showingCreateDeck = true }
-                )
+                HStack(spacing: 12) {
+                    Button {
+                        viewModel.showingImportPicker = true
+                    } label: {
+                        VStack(spacing: 8) {
+                            Image(systemName: "square.and.arrow.down")
+                                .font(.title2)
+                            Text("Import")
+                                .font(.caption)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 80)
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(12)
+                    }
+
+                    Button {
+                        showingCreateDeck = true
+                    } label: {
+                        VStack(spacing: 8) {
+                            Image(systemName: "plus.rectangle.on.rectangle")
+                                .font(.title2)
+                            Text("Create Deck")
+                                .font(.caption)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 80)
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(12)
+                    }
+                }
 
                 DeckListSection(
                     decks: viewModel.decks,
@@ -27,10 +55,14 @@ struct HomeView: View {
             viewModel.refresh()
         }
         .sheet(isPresented: $viewModel.showingImportPicker) {
-            ImportPickerView()
+            ImportPickerView(onImportComplete: {
+                viewModel.refresh()
+            })
         }
-        .sheet(isPresented: $viewModel.showingCreateDeck) {
-            CreateDeckView()
+        .sheet(isPresented: $showingCreateDeck) {
+            CreateDeckView(onDeckCreated: {
+                viewModel.refresh()
+            })
         }
         .sheet(item: $viewModel.selectedDeck) { deck in
             NavigationStack {
@@ -83,48 +115,6 @@ struct StatBox: View {
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity)
-    }
-}
-
-struct QuickActionsCard: View {
-    let onImport: () -> Void
-    let onCreateDeck: () -> Void
-
-    var body: some View {
-        HStack(spacing: 12) {
-            QuickActionButton(
-                icon: "square.and.arrow.down",
-                title: "Import",
-                action: onImport
-            )
-            QuickActionButton(
-                icon: "plus.rectangle.on.rectangle",
-                title: "Create Deck",
-                action: onCreateDeck
-            )
-        }
-    }
-}
-
-struct QuickActionButton: View {
-    let icon: String
-    let title: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(.title2)
-                Text(title)
-                    .font(.caption)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 80)
-            .background(Color(.secondarySystemBackground))
-            .cornerRadius(12)
-        }
-        .buttonStyle(.plain)
     }
 }
 

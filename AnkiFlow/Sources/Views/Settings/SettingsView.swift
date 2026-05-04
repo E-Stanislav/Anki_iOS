@@ -1,22 +1,19 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject private var appState: AppState
     @State private var notificationsEnabled = true
     @State private var dailyGoal = 20
     @State private var swipeGesturesEnabled = true
+    @AppStorage("selectedTheme") private var selectedTheme = "system"
 
     var body: some View {
         NavigationStack {
             List {
                 Section("Appearance") {
-                    Picker("Theme", selection: Binding(
-                        get: { appState.selectedTheme },
-                        set: { appState.setTheme($0) }
-                    )) {
-                        ForEach(AppTheme.allCases, id: \.self) { theme in
-                            Text(theme.rawValue.capitalized).tag(theme)
-                        }
+                    Picker("Theme", selection: $selectedTheme) {
+                        Text("Light").tag("light")
+                        Text("Dark").tag("dark")
+                        Text("System").tag("system")
                     }
                 }
 

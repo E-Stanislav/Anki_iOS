@@ -23,7 +23,6 @@ struct AppRootView: View {
     var body: some View {
         if appState.hasCompletedOnboarding {
             MainTabView()
-                .environmentObject(appState)
         } else {
             OnboardingView(appState: appState)
         }

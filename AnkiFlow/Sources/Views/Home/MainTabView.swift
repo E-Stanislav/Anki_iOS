@@ -32,24 +32,17 @@ struct MainTabView: View {
 }
 
 struct StudyTabView: View {
-    @StateObject private var viewModel = StudySessionViewModel()
-
     var body: some View {
         NavigationStack {
             StudyHomeView()
-                .environmentObject(viewModel)
         }
     }
 }
 
 struct CreateTabView: View {
-    @StateObject private var viewModel = CardEditorViewModel()
-    @State private var showingEditor = false
-
     var body: some View {
         NavigationStack {
-            CreateHomeView(showingEditor: $showingEditor)
-                .environmentObject(viewModel)
+            CreateHomeView()
         }
     }
 }

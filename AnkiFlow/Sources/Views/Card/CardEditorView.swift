@@ -1,14 +1,8 @@
 import SwiftUI
 
 struct CreateHomeView: View {
-    @Binding var showingEditor: Bool
-    @StateObject private var viewModel: CardEditorViewModel
-    @State private var selectedDeckId: UUID?
-
-    init(showingEditor: Binding<Bool>) {
-        self._showingEditor = showingEditor
-        self._viewModel = StateObject(wrappedValue: CardEditorViewModel())
-    }
+    @State private var showingEditor = false
+    @State private var viewModel = CardEditorViewModel()
 
     var body: some View {
         List {
@@ -29,14 +23,22 @@ struct CreateHomeView: View {
             }
 
             Section("Recent Cards") {
-                ForEach(viewModel.recentCards) { card in
-                    CardPreviewRow(card: card)
+                if viewModel.recentCards.isEmpty {
+                    Text("No cards yet")
+                        .foregroundColor(.secondary)
+                } else {
+                    ForEach(viewModel.recentCards) { card in
+                        CardPreviewRow(card: card)
+                    }
                 }
             }
         }
         .navigationTitle("Create")
         .fullScreenCover(isPresented: $showingEditor) {
-            CardEditorView(viewModel: viewModel, isPresented: $showingEditor)
+            CardEditorView(viewModel: $viewModel, isPresented: $showingEditor)
+        }
+        .onAppear {
+            viewModel.loadData()
         }
     }
 }
@@ -58,7 +60,7 @@ struct CardPreviewRow: View {
 }
 
 struct CardEditorView: View {
-    @ObservedObject var viewModel: CardEditorViewModel
+    @Binding var viewModel: CardEditorViewModel
     @Binding var isPresented: Bool
     @FocusState private var focusedField: EditorField?
 
@@ -135,7 +137,7 @@ final class CardEditorViewModel: ObservableObject {
         selectedDeckId != nil
     }
 
-    init() {
+    func loadData() {
         loadDecks()
         loadRecentCards()
     }

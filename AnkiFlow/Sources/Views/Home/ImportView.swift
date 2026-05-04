@@ -1,8 +1,12 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ImportPickerView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = ImportViewModel()
+    @State private var showingPicker = false
+
+    var onImportComplete: (() -> Void)?
 
     var body: some View {
         NavigationStack {
@@ -14,6 +18,9 @@ struct ImportPickerView: View {
                         .foregroundColor(.secondary)
                 } else if let result = viewModel.importResult {
                     ImportResultView(result: result) {
+                        if result.errors.isEmpty {
+                            onImportComplete?()
+                        }
                         dismiss()
                     }
                 } else {
@@ -34,7 +41,7 @@ struct ImportPickerView: View {
                     Spacer()
 
                     Button {
-                        viewModel.pickFile()
+                        showingPicker = true
                     } label: {
                         Label("Select File", systemImage: "folder")
                             .frame(maxWidth: .infinity)
@@ -50,6 +57,27 @@ struct ImportPickerView: View {
                     Button("Cancel") {
                         dismiss()
                     }
+                }
+            }
+            .fileImporter(
+                isPresented: $showingPicker,
+                allowedContentTypes: [UTType(filenameExtension: "apkg") ?? .item],
+                allowsMultipleSelection: false
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    if let url = urls.first {
+                        viewModel.importFile(url: url)
+                    }
+                case .failure(let error):
+                    viewModel.importResult = ImportResult(
+                        deckName: "Import Failed",
+                        totalCards: 0,
+                        addedCards: 0,
+                        updatedCards: 0,
+                        skippedDuplicates: 0,
+                        errors: [error.localizedDescription]
+                    )
                 }
             }
         }
@@ -116,23 +144,25 @@ final class ImportViewModel: ObservableObject {
 
     private let importer = ApkgImporter()
 
-    func pickFile() {
-        let panel = UIDocumentPickerViewController(forOpeningContentTypes: [.item])
-        panel.delegate = DocumentPickerDelegate.shared
-        DocumentPickerDelegate.shared.onPick = { [weak self] url in
-            self?.importFile(url: url)
-        }
-        panel.allowsMultipleSelection = false
-
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let rootVC = windowScene.windows.first?.rootViewController {
-            rootVC.present(panel, animated: true)
-        }
-    }
-
     func importFile(url: URL) {
         isImporting = true
         statusMessage = "Analyzing package..."
+
+        guard url.startAccessingSecurityScopedResource() else {
+            importResult = ImportResult(
+                deckName: url.lastPathComponent,
+                totalCards: 0,
+                addedCards: 0,
+                updatedCards: 0,
+                skippedDuplicates: 0,
+                errors: ["Cannot access file"])
+            isImporting = false
+            return
+        }
+
+        defer {
+            url.stopAccessingSecurityScopedResource()
+        }
 
         Task {
             do {
@@ -150,24 +180,5 @@ final class ImportViewModel: ObservableObject {
             }
             isImporting = false
         }
-    }
-}
-
-class DocumentPickerDelegate: NSObject, UIDocumentPickerDelegate {
-    static let shared = DocumentPickerDelegate()
-
-    var onPick: ((URL) -> Void)?
-
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let url = urls.first else { return }
-        onPick?(url)
-    }
-}
-
-import UniformTypeIdentifiers
-
-extension UTType {
-    static var apkg: UTType {
-        UTType(filenameExtension: "apkg") ?? .item
     }
 }
