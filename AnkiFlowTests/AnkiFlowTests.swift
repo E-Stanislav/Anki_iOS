@@ -464,4 +464,100 @@ let decks = deckRepository.getAll()
         let deletedSchedule = cardRepository.getSchedule(for: card.id)
         XCTAssertNil(deletedSchedule, "Schedule should be deleted too")
     }
+
+    // MARK: - Deck Deletion Tests
+
+    func testDeckRepositoryDeleteRemovesDeck() {
+        let deck2 = Deck(name: "Deck To Delete", description: "Will be removed")
+        deckRepository.save(deck2)
+
+        deckRepository.delete(deck2.id)
+
+        let retrievedDeck = deckRepository.getById(deck2.id)
+        XCTAssertNil(retrievedDeck, "Deck should be deleted")
+    }
+
+    func testDeckRepositoryDeleteCascadesToCards() {
+        let card = Card(
+            noteId: UUID(),
+            deckId: testDeck.id,
+            front: "Card in deck",
+            back: "Will be deleted with deck"
+        )
+        cardRepository.save(card)
+        let schedule = CardSchedule(cardId: card.id)
+        cardRepository.saveSchedule(schedule)
+
+        deckRepository.delete(testDeck.id)
+
+        let cards = cardRepository.getAll(for: testDeck.id)
+        XCTAssertTrue(cards.isEmpty, "All cards should be deleted when deck is deleted")
+
+        let cardSchedule = cardRepository.getSchedule(for: card.id)
+XCTAssertNil(cardSchedule, "Card schedule should be deleted too")
+    }
+
+    func testDeckRowItemSwipeActions() {
+        let deck = Deck(name: "Test Deck", description: "For swipe test")
+        deckRepository.save(deck)
+
+        let decks = deckRepository.getAll()
+        XCTAssertTrue(decks.contains { $0.name == "Test Deck" })
+
+        deckRepository.delete(deck.id)
+
+        let deletedDeck = deckRepository.getById(deck.id)
+        XCTAssertNil(deletedDeck, "Deck should be deleted via repository")
+    }
+
+    // MARK: - DeckDetailView Tests
+
+    func testDeckDetailViewModelDeleteDeckRemovesDeck() {
+        let deckToDelete = Deck(name: "Deck To Delete From Detail", description: "Test")
+        deckRepository.save(deckToDelete)
+
+        let viewModel = DeckDetailViewModel(deck: deckToDelete)
+        viewModel.deleteDeck()
+
+        let deletedDeck = deckRepository.getById(deckToDelete.id)
+        XCTAssertNil(deletedDeck, "Deck should be deleted via view model")
+    }
+
+    func testDeckDetailViewModelDeleteDeckCascadesToCards() {
+        let card = Card(
+            noteId: UUID(),
+            deckId: testDeck.id,
+            front: "Card before deck deletion",
+            back: "Should be deleted"
+        )
+        cardRepository.save(card)
+        let schedule = CardSchedule(cardId: card.id)
+        cardRepository.saveSchedule(schedule)
+
+        let viewModel = DeckDetailViewModel(deck: testDeck)
+        viewModel.deleteDeck()
+
+        let cards = cardRepository.getAll(for: testDeck.id)
+        XCTAssertTrue(cards.isEmpty, "Cards should be deleted when deck is deleted from detail view")
+
+        let cardSchedule = cardRepository.getSchedule(for: card.id)
+        XCTAssertNil(cardSchedule, "Card schedule should be deleted too")
+    }
+
+    func testDeckDetailViewModelDeleteDeckUpdatesDecksList() {
+        let deck1 = Deck(name: "First Deck", description: "")
+        let deck2 = Deck(name: "Second Deck", description: "")
+        deckRepository.save(deck1)
+        deckRepository.save(deck2)
+
+        let initialDecks = deckRepository.getAll()
+        XCTAssertEqual(initialDecks.count, 2, "Should have 2 decks before deletion")
+
+        let viewModel = DeckDetailViewModel(deck: deck1)
+        viewModel.deleteDeck()
+
+        let remainingDecks = deckRepository.getAll()
+        XCTAssertEqual(remainingDecks.count, 1, "Should have 1 deck after deletion")
+        XCTAssertEqual(remainingDecks.first?.id, deck2.id, "Correct deck should remain")
+    }
 }

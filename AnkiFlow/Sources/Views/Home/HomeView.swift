@@ -44,9 +44,11 @@ struct HomeView: View {
                 DeckListSection(
                     decks: viewModel.decks,
                     onDeckTap: { deck in
+                        print("DEBUG: HomeView onDeckTap called with deck: \(deck.name)")
                         viewModel.selectedDeck = deck
                     },
                     onDeckDelete: { deck in
+                        print("DEBUG: HomeView onDeckDelete called with deck: \(deck.name)")
                         viewModel.deckToDelete = deck
                     }
                 )
@@ -88,6 +90,9 @@ struct HomeView: View {
         .sheet(item: $viewModel.selectedDeck) { deck in
             NavigationStack {
                 DeckDetailView(deck: deck)
+            }
+            .onAppear {
+                print("DEBUG: HomeView sheet appeared with deck: \(deck.name)")
             }
         }
     }
@@ -145,7 +150,7 @@ struct DeckListSection: View {
     let onDeckDelete: (Deck) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Your Decks")
                 .font(.headline)
 
@@ -157,19 +162,55 @@ struct DeckListSection: View {
                 )
             } else {
                 ForEach(decks) { deck in
-                    DeckRowView(deck: deck)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            onDeckTap(deck)
-                        }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            Button(role: .destructive) {
-                                onDeckDelete(deck)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
+                    DeckCardView(
+                        deck: deck,
+                        onTap: { onDeckTap(deck) },
+                        onDelete: { onDeckDelete(deck) }
+                    )
                 }
+            }
+        }
+    }
+}
+
+struct DeckCardView: View {
+    let deck: Deck
+    let onTap: () -> Void
+    let onDelete: () -> Void
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(deck.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                if !deck.description.isEmpty {
+                    Text(deck.description)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
+            }
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .background(Color(.secondarySystemBackground))
+        .cornerRadius(12)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            print("DEBUG: DeckCardView tapped - deck: \(deck.name), id: \(deck.id)")
+            onTap()
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(role: .destructive) {
+                print("DEBUG: DeckCardView swipe delete triggered - deck: \(deck.name)")
+                onDelete()
+            } label: {
+                Label("Delete", systemImage: "trash")
             }
         }
     }

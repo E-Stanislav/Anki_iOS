@@ -20,9 +20,9 @@ final class HomeViewModel: ObservableObject {
 
     func loadData() {
         decks = deckRepo.getAll()
-        if decks.isEmpty {
-            createSampleDeck()
-        }
+        // if decks.isEmpty {
+        //     createSampleDeck()
+        // }
         calculateTodayStats()
     }
 
@@ -31,6 +31,7 @@ final class HomeViewModel: ObservableObject {
     }
 
     func deleteDeck(_ deck: Deck) {
+        print("DEBUG: HomeViewModel.deleteDeck called - deck: \(deck.name)")
         deckRepo.delete(deck.id)
         loadData()
     }

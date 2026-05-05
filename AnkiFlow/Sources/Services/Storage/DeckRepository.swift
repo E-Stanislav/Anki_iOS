@@ -4,7 +4,7 @@ protocol DeckRepositoryProtocol {
     func getAll() -> [Deck]
     func getById(_ id: UUID) -> Deck?
     func save(_ deck: Deck)
-    func delete(_ id: UUID)
+    func delete(_ id: UUID) -> Bool
     func getStats(for deckId: UUID) -> DeckStats?
 }
 
@@ -40,10 +40,34 @@ final class DeckRepository: DeckRepositoryProtocol {
         ])
     }
 
-    func delete(_ id: UUID) {
-        db.execute("DELETE FROM card_schedules WHERE card_id IN (SELECT id FROM cards WHERE deck_id = ?)", parameters: [id.uuidString])
-        db.execute("DELETE FROM cards WHERE deck_id = ?", parameters: [id.uuidString])
-        db.execute("DELETE FROM decks WHERE id = ?", parameters: [id.uuidString])
+    func delete(_ id: UUID) -> Bool {
+        let deckIdStr = id.uuidString
+
+        let deleteSchedules = db.execute(
+            "DELETE FROM card_schedules WHERE card_id IN (SELECT id FROM cards WHERE deck_id = ?)",
+            parameters: [deckIdStr]
+        )
+        print("DEBUG DeckRepository.delete: schedules deleted: \(deleteSchedules)")
+
+        let deleteCards = db.execute(
+            "DELETE FROM cards WHERE deck_id = ?",
+            parameters: [deckIdStr]
+        )
+        print("DEBUG DeckRepository.delete: cards deleted: \(deleteCards)")
+
+        let deleteNotes = db.execute(
+            "DELETE FROM notes WHERE deck_id = ?",
+            parameters: [deckIdStr]
+        )
+        print("DEBUG DeckRepository.delete: notes deleted: \(deleteNotes)")
+
+        let deleteDeck = db.execute(
+            "DELETE FROM decks WHERE id = ?",
+            parameters: [deckIdStr]
+        )
+        print("DEBUG DeckRepository.delete: deck deleted: \(deleteDeck)")
+
+        return deleteDeck
     }
 
     func deleteAll() {

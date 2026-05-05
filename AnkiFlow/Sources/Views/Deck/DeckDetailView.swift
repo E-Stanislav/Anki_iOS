@@ -5,6 +5,8 @@ struct DeckDetailView: View {
     @StateObject private var viewModel: DeckDetailViewModel
     @State private var showingStudy = false
     @State private var showingAddCard = false
+    @State private var showingDeleteAlert = false
+    @Environment(\.dismiss) private var dismiss
 
     init(deck: Deck) {
         self.deck = deck
@@ -48,6 +50,12 @@ struct DeckDetailView: View {
                 } label: {
                     Label("Add Card", systemImage: "plus")
                 }
+
+                Button(role: .destructive) {
+                    showingDeleteAlert = true
+                } label: {
+                    Label("Delete Deck", systemImage: "trash")
+                }
             }
 
             Section("Cards") {
@@ -72,6 +80,15 @@ struct DeckDetailView: View {
             AddCardSheet(deckId: deck.id) {
                 viewModel.refresh()
             }
+        }
+        .alert("Delete Deck?", isPresented: $showingDeleteAlert) {
+            Button("Cancel", role: .cancel) {}
+            Button("Delete", role: .destructive) {
+                viewModel.deleteDeck()
+                dismiss()
+            }
+        } message: {
+            Text("Are you sure you want to delete \"\(deck.name)\"? All cards in this deck will be permanently deleted.")
         }
     }
 }
@@ -200,5 +217,9 @@ final class DeckDetailViewModel: ObservableObject {
     func deleteCard(_ card: Card) {
         cardRepo.delete(card.id)
         refresh()
+    }
+
+    func deleteDeck() {
+        deckRepo.delete(deck.id)
     }
 }
