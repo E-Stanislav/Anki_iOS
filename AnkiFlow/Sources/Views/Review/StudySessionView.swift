@@ -332,6 +332,23 @@ struct FlashcardView: View {
         }
     }
 
+    private struct CardContent {
+        let topic: String
+        let word: String
+        let example: String
+    }
+
+    private func parseCardContent(_ content: String) -> CardContent {
+        let lines = content.components(separatedBy: "\n").filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+
+        // Формат: строка 1 = topic, строка 2 = word (перевод), строка 3+ = example
+        let topic = lines.count > 0 ? lines[0] : ""
+        let word = lines.count > 1 ? lines[1] : content
+        let example = lines.count > 2 ? lines.dropFirst(2).joined(separator: "\n") : ""
+
+        return CardContent(topic: topic, word: word, example: example)
+    }
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
@@ -353,17 +370,34 @@ struct FlashcardView: View {
                 }
             }
 
-            VStack {
+            VStack(spacing: 16) {
+                let content = parseCardContent(isAnswerRevealed ? card.back : card.front)
+                if !content.topic.isEmpty {
+                    Text(content.topic)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
+
                 Spacer()
 
-                Text(isAnswerRevealed ? card.back : card.front)
+                Text(content.word)
                     .font(.title)
+                    .fontWeight(.bold)
                     .multilineTextAlignment(.center)
-                    .padding()
                     .opacity(swipeText.isEmpty ? 1 : 0.3)
 
                 Spacer()
+
+                if !content.example.isEmpty {
+                    Text(content.example)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(3)
+                }
             }
+            .padding()
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: 400)

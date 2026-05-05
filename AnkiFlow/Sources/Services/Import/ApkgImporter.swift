@@ -477,7 +477,14 @@ private func unzipFile(at source: URL, to destination: URL) throws {
             }
         }
         result = stripHTML(result)
-        return result.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // Normalize multiple newlines to single newlines, trim
+        while result.contains("\n\n\n") {
+            result = result.replacingOccurrences(of: "\n\n\n", with: "\n\n")
+        }
+        result = result.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        return result
     }
 
     private func stripHTML(_ html: String) -> String {
@@ -523,6 +530,7 @@ private func unzipFile(at source: URL, to destination: URL) throws {
     }
 
     private func parseAnkiFields(_ data: String) -> [String] {
+        // Anki uses U+001F (Unit Separator) as field separator
         return data.components(separatedBy: "\u{1F}")
     }
 
