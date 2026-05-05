@@ -5,6 +5,7 @@ struct SettingsView: View {
     @State private var dailyGoal = 20
     @State private var swipeGesturesEnabled = true
     @AppStorage("selectedTheme") private var selectedTheme = "system"
+    @StateObject private var notificationWrapper = NotificationServiceWrapper()
 
     var body: some View {
         NavigationStack {
@@ -31,6 +32,13 @@ struct SettingsView: View {
 
                 Section("Notifications") {
                     Toggle("Daily Reminder", isOn: $notificationsEnabled)
+                        .onChange(of: notificationsEnabled) { newValue in
+                            if newValue {
+                                notificationWrapper.requestPermissionAndSchedule()
+                            } else {
+                                notificationWrapper.cancelAll()
+                            }
+                        }
 
                     if notificationsEnabled {
                         NavigationLink {
@@ -129,8 +137,17 @@ struct GestureSettingsView: View {
 }
 
 struct NotificationSettingsView: View {
-    @State private var notificationTime = Date()
+    @AppStorage("notificationTimeInterval") private var notificationTimeInterval: TimeInterval = 0
     @AppStorage("streakNotifications") private var streakNotifications = true
+    @StateObject private var notificationService = NotificationServiceWrapper()
+    @State private var notificationTime = Date()
+
+    private var storedTime: Date {
+        if notificationTimeInterval == 0 {
+            return Date()
+        }
+        return Date(timeIntervalSince1970: notificationTimeInterval)
+    }
 
     var body: some View {
         List {
@@ -140,6 +157,9 @@ struct NotificationSettingsView: View {
                     selection: $notificationTime,
                     displayedComponents: .hourAndMinute
                 )
+                .onChange(of: notificationTime) { _ in
+                    notificationService.scheduleDaily(time: notificationTime)
+                }
             }
 
             Section("Types") {
@@ -147,6 +167,48 @@ struct NotificationSettingsView: View {
             }
         }
         .navigationTitle("Notifications")
+        .onAppear {
+            notificationTime = storedTime
+            notificationService.scheduleDaily(time: notificationTime)
+        }
+    }
+}
+
+@MainActor
+final class NotificationServiceWrapper: ObservableObject {
+    private let service = NotificationService()
+
+    func scheduleDaily(time: Date) {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: time)
+        let minute = calendar.component(.minute, from: time)
+        let timeInterval = time.timeIntervalSince1970
+        UserDefaults.standard.set(timeInterval, forKey: "notificationTimeInterval")
+        print("[NotificationServiceWrapper] scheduleDaily saving interval=\(timeInterval), hour=\(hour), minute=\(minute)")
+        Task {
+            let result = await service.scheduleDailyReminder(hour: hour, minute: minute)
+            print("[NotificationServiceWrapper] scheduleDaily result: \(result)")
+            let pending = await service.getPendingNotifications()
+            print("[NotificationServiceWrapper] Pending notifications after schedule: \(pending.count)")
+        }
+    }
+
+    func requestPermissionAndSchedule() {
+        Task {
+            print("[NotificationServiceWrapper] requestPermissionAndSchedule called")
+            let granted = await service.requestPermission()
+            print("[NotificationServiceWrapper] permission granted: \(granted)")
+            if granted {
+                let interval = UserDefaults.standard.double(forKey: "notificationTimeInterval")
+                let time = interval == 0 ? Date() : Date(timeIntervalSince1970: interval)
+                print("[NotificationServiceWrapper] scheduling with interval: \(interval), time: \(time)")
+                scheduleDaily(time: time)
+            }
+        }
+    }
+
+    func cancelAll() {
+        _ = service.cancelAllReminders()
     }
 }
 

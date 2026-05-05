@@ -1,10 +1,13 @@
 import UIKit
+import UserNotifications
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
+
+        UNUserNotificationCenter.current().delegate = self
 
         if let urlContext = connectionOptions.urlContexts.first {
             handleIncomingFile(url: urlContext.url)
@@ -23,6 +26,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             object: nil,
             userInfo: ["url": url]
         )
+    }
+}
+
+extension SceneDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("[NotificationService] willPresent notification: \(notification.request.identifier)")
+        completionHandler([.banner, .sound, .badge])
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("[NotificationService] didReceive response for: \(response.notification.request.identifier)")
+        completionHandler()
     }
 }
 
