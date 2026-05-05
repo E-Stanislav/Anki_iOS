@@ -1,6 +1,7 @@
 import XCTest
 @testable import AnkiFlow
 
+@MainActor
 final class AnkiFlowTests: XCTestCase {
 
     private var deckRepository: DeckRepository!
@@ -172,44 +173,22 @@ final class AnkiFlowTests: XCTestCase {
     }
 
     func testApkgImport() async throws {
-        let testBundle = Bundle(for: type(of: self))
-        guard let apkgURL = testBundle.url(forResource: "English A2 - Everyday + IT", withExtension: "apkg") else {
-            let projectDir = URL(fileURLWithPath: "/Users/stanislave/Documents/Projects/Anki_iOS")
-            let fileURL = projectDir.appendingPathComponent("English A2 - Everyday + IT.apkg")
-            XCTAssertTrue(FileManager.default.fileExists(atPath: fileURL.path), "APKG file should exist at \(fileURL.path)")
+        let projectDir = URL(fileURLWithPath: "/Users/stanislave/Documents/Projects/Anki_iOS")
+        let fileURL = projectDir.appendingPathComponent("English A2 - Everyday + IT.apkg")
 
-            let importer = ApkgImporter()
-            deckRepository.deleteAll()
-
-            let result = try await importer.importFile(at: fileURL, options: ImportOptions())
-
-            XCTAssertGreaterThan(result.totalCards, 0, "Should import some cards")
-            XCTAssertGreaterThan(result.addedCards, 0, "Should add some cards")
-            XCTAssertTrue(result.errors.isEmpty, "Should have no errors, got: \(result.errors.joined(separator: ", "))")
-
-let decks = deckRepository.getAll()
-        XCTAssertFalse(decks.isEmpty, "Should have imported a deck")
-
-        let cards = cardRepository.getAll(for: decks.first!.id)
-        XCTAssertFalse(cards.isEmpty, "Imported deck should have cards")
-
-        if let firstCard = cards.first {
-            XCTAssertFalse(firstCard.front.isEmpty, "First card front should not be empty")
-            XCTAssertFalse(firstCard.back.isEmpty, "First card back should not be empty")
-            let frontHasHTML = firstCard.front.contains("<") && firstCard.front.contains(">")
-            XCTAssertFalse(frontHasHTML, "Front should not contain HTML, got: \(firstCard.front)")
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            XCTFail("APKG file not found at \(fileURL.path)")
+            return
         }
-
-        return
-    }
 
         let importer = ApkgImporter()
         deckRepository.deleteAll()
 
-        let result = try await importer.importFile(at: apkgURL, options: ImportOptions())
+        let result = try await importer.importFile(at: fileURL, options: ImportOptions())
 
         XCTAssertGreaterThan(result.totalCards, 0, "Should import some cards")
         XCTAssertGreaterThan(result.addedCards, 0, "Should add some cards")
+        XCTAssertTrue(result.errors.isEmpty, "Should have no errors, got: \(result.errors.joined(separator: ", "))")
 
         let decks = deckRepository.getAll()
         XCTAssertFalse(decks.isEmpty, "Should have imported a deck")
@@ -221,7 +200,7 @@ let decks = deckRepository.getAll()
             XCTAssertFalse(firstCard.front.isEmpty, "First card front should not be empty")
             XCTAssertFalse(firstCard.back.isEmpty, "First card back should not be empty")
             let frontHasHTML = firstCard.front.contains("<") && firstCard.front.contains(">")
-            XCTAssertFalse(frontHasHTML, "Front should not contain HTML")
+            XCTAssertFalse(frontHasHTML, "Front should not contain HTML, got: \(firstCard.front)")
         }
     }
 
@@ -244,6 +223,20 @@ let decks = deckRepository.getAll()
 
         scheduled = await service.scheduleDailyReminder(hour: 20, minute: 30)
         XCTAssertTrue(scheduled, "Should schedule evening reminder")
+    }
+
+    func testNotificationServicePendingNotifications() async {
+        let service = NotificationService()
+        await service.requestPermission()
+
+        service.cancelAllReminders()
+
+        let scheduled = await service.scheduleDailyReminder(hour: 14, minute: 30)
+        XCTAssertTrue(scheduled, "Should schedule notification")
+
+        let pending = await service.getPendingNotifications()
+        XCTAssertEqual(pending.count, 1, "Should have one pending notification")
+        XCTAssertEqual(pending.first?.identifier, "daily-reminder", "Should have correct identifier")
     }
 
     func testNotificationServiceCancelAllReminders() async {
@@ -545,6 +538,8 @@ XCTAssertNil(cardSchedule, "Card schedule should be deleted too")
     }
 
     func testDeckDetailViewModelDeleteDeckUpdatesDecksList() {
+        deckRepository.deleteAll()
+
         let deck1 = Deck(name: "First Deck", description: "")
         let deck2 = Deck(name: "Second Deck", description: "")
         deckRepository.save(deck1)
