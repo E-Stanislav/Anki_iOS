@@ -5,12 +5,16 @@ struct AnkiFlowApp: App {
     @StateObject private var appState = AppState()
     @Environment(\.scenePhase) private var scenePhase
 
+    init() {
+        _ = DatabaseService.shared
+    }
+
     var body: some Scene {
         WindowGroup {
             AppRootView(appState: appState)
         }
         .onChange(of: scenePhase) { phase in
-            if phase == .background || phase == .inactive {
+            if phase == .background {
                 appState.save()
             }
         }

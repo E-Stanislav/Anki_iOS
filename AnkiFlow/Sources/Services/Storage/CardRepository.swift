@@ -4,6 +4,7 @@ protocol CardRepositoryProtocol {
     func getAll(for deckId: UUID) -> [Card]
     func getById(_ id: UUID) -> Card?
     func getDueCards(for deckId: UUID, limit: Int) -> [Card]
+    func getCardsReviewedToday(for deckId: UUID, limit: Int) -> [Card]
     func save(_ card: Card)
     func saveSchedule(_ schedule: CardSchedule)
     func getSchedule(for cardId: UUID) -> CardSchedule?
@@ -35,6 +36,27 @@ final class CardRepository: CardRepositoryProtocol {
         let rows = db.query(sql, parameters: [
             deckId.uuidString,
             now,
+            limit
+        ])
+        return rows.compactMap { decodeCard(from: $0) }
+    }
+
+    func getCardsReviewedToday(for deckId: UUID, limit: Int) -> [Card] {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date())
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        let sql = """
+        SELECT DISTINCT c.* FROM cards c
+        JOIN review_logs rl ON c.id = rl.card_id
+        WHERE c.deck_id = ? AND rl.reviewed_at >= ? AND rl.reviewed_at < ?
+        ORDER BY rl.reviewed_at ASC
+        LIMIT ?
+        """
+        let rows = db.query(sql, parameters: [
+            deckId.uuidString,
+            startOfDay.timeIntervalSince1970,
+            endOfDay.timeIntervalSince1970,
             limit
         ])
         return rows.compactMap { decodeCard(from: $0) }

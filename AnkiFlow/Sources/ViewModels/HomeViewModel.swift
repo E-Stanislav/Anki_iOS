@@ -10,20 +10,19 @@ final class HomeViewModel: ObservableObject {
     @Published var showingSearch = false
     @Published var selectedDeck: Deck?
     @Published var deckToDelete: Deck?
+    @Published var isLoading = true
 
     private let deckRepo = DeckRepository()
     private let cardRepo = CardRepository()
 
-    init() {
-        loadData()
-    }
-
     func loadData() {
+        isLoading = true
         decks = deckRepo.getAll()
         if decks.isEmpty {
             createSampleDeck()
         }
         calculateTodayStats()
+        isLoading = false
     }
 
     func refresh() {
@@ -36,7 +35,7 @@ final class HomeViewModel: ObservableObject {
         loadData()
     }
 
-    func createSampleDeck() {
+    private func createSampleDeck() {
         let sampleDeck = Deck(name: "Sample Deck", description: "Demo deck with sample cards")
         deckRepo.save(sampleDeck)
 

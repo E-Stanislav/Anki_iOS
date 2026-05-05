@@ -12,6 +12,7 @@ final class StudySessionViewModel: ObservableObject {
     @Published var previewIntervals: [ReviewRating: Int] = [:]
     @Published var sessionStats = SessionStats()
     @Published var decksWithDueCards: [DeckWithDueCards] = []
+    @Published var decksWithReviewedToday: [DeckWithDueCards] = []
     @Published var allDecks: [Deck] = []
     @Published var dailyGoal: Int = 20
     @Published var todayReviewCount: Int = 0
@@ -19,6 +20,7 @@ final class StudySessionViewModel: ObservableObject {
     private var dueCards: [Card] = []
     private var sessionStartTime: Date?
     private var cardStartTime: Date?
+    private var isRepeatSession: Bool = false
     private let deckRepo = DeckRepository()
     private let cardRepo = CardRepository()
     private let scheduler = SM2Scheduler()
@@ -48,6 +50,11 @@ final class StudySessionViewModel: ObservableObject {
             if dueCards.isEmpty { return nil }
             return DeckWithDueCards(deck: deck, dueCount: dueCards.count)
         }
+        decksWithReviewedToday = allDecks.compactMap { deck in
+            let reviewedToday = cardRepo.getCardsReviewedToday(for: deck.id, limit: 1000)
+            if reviewedToday.isEmpty { return nil }
+            return DeckWithDueCards(deck: deck, dueCount: reviewedToday.count)
+        }
     }
 
     func startSession(deckId: UUID) {
@@ -60,6 +67,21 @@ final class StudySessionViewModel: ObservableObject {
         sessionStartTime = Date()
         isSessionActive = true
         isPaused = false
+        isRepeatSession = false
+
+        showNextCard()
+    }
+
+    func startRepeatSession(deckId: UUID) {
+        let reviewedToday = cardRepo.getCardsReviewedToday(for: deckId, limit: 100)
+        dueCards = reviewedToday
+        totalCards = reviewedToday.count
+        currentIndex = 0
+        sessionStats = SessionStats()
+        sessionStartTime = Date()
+        isSessionActive = true
+        isPaused = false
+        isRepeatSession = true
 
         showNextCard()
     }
@@ -90,7 +112,10 @@ final class StudySessionViewModel: ObservableObject {
         let timeTaken = cardStartTime.map { Date().timeIntervalSince($0) } ?? 0
         sessionStats.totalTime += timeTaken
         sessionStats.cardsReviewed += 1
-        todayReviewCount += 1
+
+        if !isRepeatSession {
+            todayReviewCount += 1
+        }
 
         if rating != .again {
             sessionStats.correctCount += 1

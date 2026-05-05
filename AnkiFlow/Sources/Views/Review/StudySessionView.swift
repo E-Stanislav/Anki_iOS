@@ -13,6 +13,23 @@ struct StudyHomeView: View {
                 )
             }
 
+            if !viewModel.decksWithReviewedToday.isEmpty {
+                Section("Repeat Today") {
+                    ForEach(viewModel.decksWithReviewedToday, id: \.deck.id) { deckWithCards in
+                        StudyDeckRow(
+                            deck: deckWithCards.deck,
+                            dueCount: deckWithCards.dueCount,
+                            remainingToday: remainingForToday(),
+                            onStudy: {
+                                viewModel.startRepeatSession(deckId: deckWithCards.deck.id)
+                            },
+                            buttonTitle: "Repeat",
+                            isRepeatButton: true
+                        )
+                    }
+                }
+            }
+
             if !viewModel.decksWithDueCards.isEmpty {
                 Section("Ready to Review") {
                     ForEach(viewModel.decksWithDueCards, id: \.deck.id) { deckWithCards in
@@ -22,7 +39,8 @@ struct StudyHomeView: View {
                             remainingToday: remainingForToday(),
                             onStudy: {
                                 viewModel.startSession(deckId: deckWithCards.deck.id)
-                            }
+                            },
+                            buttonTitle: "Study"
                         )
                     }
                 }
@@ -46,11 +64,22 @@ struct StudyHomeView: View {
         .fullScreenCover(isPresented: $viewModel.isSessionActive) {
             ReviewSessionView(viewModel: viewModel)
         }
+        .sheet(item: $selectedDeckId) { deckId in
+            if let deck = viewModel.allDecks.first(where: { $0.id == deckId }) {
+                NavigationStack {
+                    DeckDetailView(deck: deck)
+                }
+            }
+        }
     }
 
     private func remainingForToday() -> Int {
         max(0, viewModel.dailyGoal - viewModel.todayReviewCount)
     }
+}
+
+extension UUID: @retroactive Identifiable {
+    public var id: UUID { self }
 }
 
 struct DailyProgressCard: View {
@@ -117,9 +146,18 @@ struct StudyDeckRow: View {
     let dueCount: Int
     let remainingToday: Int
     let onStudy: () -> Void
+    var buttonTitle: String = "Study"
+    var isRepeatButton: Bool = false
 
     private var displayCount: Int {
         min(dueCount, remainingToday)
+    }
+
+    private var shouldDisableButton: Bool {
+        if isRepeatButton {
+            return dueCount == 0
+        }
+        return dueCount == 0 || remainingToday <= 0
     }
 
     var body: some View {
@@ -134,9 +172,9 @@ struct StudyDeckRow: View {
 
             Spacer()
 
-            Button("Study", action: onStudy)
+            Button(buttonTitle, action: onStudy)
                 .buttonStyle(.borderedProminent)
-                .disabled(dueCount == 0 || remainingToday <= 0)
+                .disabled(shouldDisableButton)
         }
     }
 }

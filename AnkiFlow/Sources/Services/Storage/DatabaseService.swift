@@ -27,6 +27,10 @@ final class DatabaseService {
             print("Error opening database")
         }
         execute("PRAGMA foreign_keys = ON")
+        execute("PRAGMA journal_mode = WAL")
+        execute("PRAGMA synchronous = NORMAL")
+        execute("PRAGMA cache_size = -64000")
+        execute("PRAGMA temp_store = MEMORY")
     }
 
     private func migrateSchemaIfNeeded() {
@@ -193,6 +197,17 @@ final class DatabaseService {
         executeSQL(createMediaFiles)
         executeSQL(createImportJobs)
         executeSQL(createSyncState)
+
+        createIndexes()
+    }
+
+    private func createIndexes() {
+        execute("CREATE INDEX IF NOT EXISTS idx_cards_deck_id ON cards(deck_id)")
+        execute("CREATE INDEX IF NOT EXISTS idx_card_schedules_card_id ON card_schedules(card_id)")
+        execute("CREATE INDEX IF NOT EXISTS idx_card_schedules_due ON card_schedules(due)")
+        execute("CREATE INDEX IF NOT EXISTS idx_review_logs_card_id ON review_logs(card_id)")
+        execute("CREATE INDEX IF NOT EXISTS idx_review_logs_reviewed_at ON review_logs(reviewed_at)")
+        execute("CREATE INDEX IF NOT EXISTS idx_notes_deck_id ON notes(deck_id)")
     }
 
     func executeSQL(_ sql: String) {

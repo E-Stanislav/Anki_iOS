@@ -5,6 +5,21 @@ struct HomeView: View {
     @State private var showingCreateDeck = false
 
     var body: some View {
+        Group {
+            if viewModel.isLoading {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                contentView
+            }
+        }
+        .onAppear {
+            viewModel.loadData()
+        }
+    }
+
+    @ViewBuilder
+    private var contentView: some View {
         ScrollView {
             VStack(spacing: 24) {
                 TodayOverviewCard(stats: viewModel.todayStats)
