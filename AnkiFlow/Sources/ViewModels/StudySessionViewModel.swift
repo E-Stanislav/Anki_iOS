@@ -13,6 +13,8 @@ final class StudySessionViewModel: ObservableObject {
     @Published var sessionStats = SessionStats()
     @Published var decksWithDueCards: [DeckWithDueCards] = []
     @Published var allDecks: [Deck] = []
+    @Published var dailyGoal: Int = 20
+    @Published var todayReviewCount: Int = 0
 
     private var dueCards: [Card] = []
     private var sessionStartTime: Date?
@@ -23,7 +25,20 @@ final class StudySessionViewModel: ObservableObject {
     private let reviewLogRepo = ReviewLogRepository()
 
     init() {
+        loadDailyGoal()
+        loadTodayReviewCount()
         loadDecks()
+    }
+
+    func loadDailyGoal() {
+        dailyGoal = UserDefaults.standard.integer(forKey: "dailyGoal")
+        if dailyGoal == 0 {
+            dailyGoal = 20
+        }
+    }
+
+    func loadTodayReviewCount() {
+        todayReviewCount = reviewLogRepo.getTodayReviewCount()
     }
 
     func loadDecks() {
@@ -36,7 +51,9 @@ final class StudySessionViewModel: ObservableObject {
     }
 
     func startSession(deckId: UUID) {
-        dueCards = cardRepo.getDueCards(for: deckId, limit: 100)
+        let remainingCards = dailyGoal - todayReviewCount
+        let effectiveLimit = min(remainingCards, 100)
+        dueCards = cardRepo.getDueCards(for: deckId, limit: effectiveLimit)
         totalCards = dueCards.count
         currentIndex = 0
         sessionStats = SessionStats()
@@ -73,6 +90,7 @@ final class StudySessionViewModel: ObservableObject {
         let timeTaken = cardStartTime.map { Date().timeIntervalSince($0) } ?? 0
         sessionStats.totalTime += timeTaken
         sessionStats.cardsReviewed += 1
+        todayReviewCount += 1
 
         if rating != .again {
             sessionStats.correctCount += 1

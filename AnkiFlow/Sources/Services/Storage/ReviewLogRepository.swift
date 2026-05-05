@@ -5,6 +5,7 @@ protocol ReviewLogRepositoryProtocol {
     func getRecent(limit: Int) -> [ReviewLog]
     func getStats(from: Date, to: Date) -> ReviewStats
     func getActivityForPeriod(days: Int) -> [DailyActivityCount]
+    func getTodayReviewCount() -> Int
     func save(_ log: ReviewLog)
 }
 
@@ -105,6 +106,22 @@ final class ReviewLogRepository: ReviewLogRepositoryProtocol {
         }
 
         return activities.reversed()
+    }
+
+    func getTodayReviewCount() -> Int {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date())
+        guard let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else { return 0 }
+
+        let rows = db.query(
+            """
+            SELECT COUNT(*) as count FROM review_logs
+            WHERE reviewed_at >= ? AND reviewed_at < ?
+            """,
+            parameters: [startOfDay.timeIntervalSince1970, endOfDay.timeIntervalSince1970]
+        )
+
+        return rows.first?["count"] as? Int ?? 0
     }
 
     private func decodeReviewLog(from row: [String: Any]) -> ReviewLog? {

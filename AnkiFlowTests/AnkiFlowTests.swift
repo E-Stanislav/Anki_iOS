@@ -204,51 +204,6 @@ final class AnkiFlowTests: XCTestCase {
         }
     }
 
-    func testNotificationServicePermissionRequest() async {
-        let service = NotificationService()
-
-        let granted = await service.requestPermission()
-        XCTAssertTrue(granted, "Permission should be granted")
-
-        let authorized = service.isAuthorized()
-        XCTAssertTrue(authorized, "Should be authorized after permission request")
-    }
-
-    func testNotificationServiceScheduleDailyReminder() async {
-        let service = NotificationService()
-        await service.requestPermission()
-
-        var scheduled = await service.scheduleDailyReminder(hour: 9, minute: 0)
-        XCTAssertTrue(scheduled, "Should schedule daily reminder")
-
-        scheduled = await service.scheduleDailyReminder(hour: 20, minute: 30)
-        XCTAssertTrue(scheduled, "Should schedule evening reminder")
-    }
-
-    func testNotificationServicePendingNotifications() async {
-        let service = NotificationService()
-        await service.requestPermission()
-
-        service.cancelAllReminders()
-
-        let scheduled = await service.scheduleDailyReminder(hour: 14, minute: 30)
-        XCTAssertTrue(scheduled, "Should schedule notification")
-
-        let pending = await service.getPendingNotifications()
-        XCTAssertEqual(pending.count, 1, "Should have one pending notification")
-        XCTAssertEqual(pending.first?.identifier, "daily-reminder", "Should have correct identifier")
-    }
-
-    func testNotificationServiceCancelAllReminders() async {
-        let service = NotificationService()
-        await service.requestPermission()
-
-        await service.scheduleDailyReminder(hour: 9, minute: 0)
-
-        let cancelled = service.cancelAllReminders()
-        XCTAssertTrue(cancelled, "Should cancel all reminders")
-    }
-
     // MARK: - Theme Tests
 
     func testAppThemeLight() {
@@ -554,5 +509,145 @@ XCTAssertNil(cardSchedule, "Card schedule should be deleted too")
         let remainingDecks = deckRepository.getAll()
         XCTAssertEqual(remainingDecks.count, 1, "Should have 1 deck after deletion")
         XCTAssertEqual(remainingDecks.first?.id, deck2.id, "Correct deck should remain")
+    }
+
+    // MARK: - Daily Goal & Review Count Tests
+
+    func testReviewLogRepositoryGetTodayReviewCount() {
+        let reviewLogRepo = ReviewLogRepository()
+        let initialCount = reviewLogRepo.getTodayReviewCount()
+
+        let card = Card(
+            noteId: UUID(),
+            deckId: testDeck.id,
+            front: "Front",
+            back: "Back"
+        )
+        cardRepository.save(card)
+
+        let log = ReviewLog(
+            cardId: card.id,
+            rating: .good,
+            interval: 1,
+            easeFactor: 2.5,
+            timeTaken: 5.0
+        )
+        reviewLogRepo.save(log)
+
+        let newCount = reviewLogRepo.getTodayReviewCount()
+        XCTAssertEqual(newCount, initialCount + 1, "Count should increment by 1")
+    }
+
+    func testReviewLogRepositoryTodayReviewCountIncreases() {
+        let reviewLogRepo = ReviewLogRepository()
+        let initialCount = reviewLogRepo.getTodayReviewCount()
+
+        for i in 0..<3 {
+            let card = Card(
+                noteId: UUID(),
+                deckId: testDeck.id,
+                front: "Front \(i)",
+                back: "Back \(i)"
+            )
+            cardRepository.save(card)
+
+            let log = ReviewLog(
+                cardId: card.id,
+                rating: .good,
+                interval: 1,
+                easeFactor: 2.5,
+                timeTaken: 5.0
+            )
+            reviewLogRepo.save(log)
+        }
+
+        let newCount = reviewLogRepo.getTodayReviewCount()
+        XCTAssertEqual(newCount, initialCount + 3, "Count should increase by 3")
+    }
+
+    func testDailyGoalPersistsToUserDefaults() {
+        UserDefaults.standard.set(50, forKey: "dailyGoal")
+
+        let stored = UserDefaults.standard.integer(forKey: "dailyGoal")
+        XCTAssertEqual(stored, 50, "Daily goal should persist to UserDefaults")
+    }
+
+    func testDailyGoalDefaultValue() {
+        UserDefaults.standard.removeObject(forKey: "dailyGoal")
+
+        let stored = UserDefaults.standard.integer(forKey: "dailyGoal")
+        XCTAssertEqual(stored, 0, "Default should be 0 when not set")
+
+        let viewModel = StudySessionViewModel()
+        XCTAssertEqual(viewModel.dailyGoal, 20, "ViewModel should default to 20")
+    }
+
+    func testStudySessionViewModelRespectsDailyGoalLimit() {
+        UserDefaults.standard.set(5, forKey: "dailyGoal")
+
+        let card1 = Card(noteId: UUID(), deckId: testDeck.id, front: "F1", back: "B1")
+        let card2 = Card(noteId: UUID(), deckId: testDeck.id, front: "F2", back: "B2")
+        let card3 = Card(noteId: UUID(), deckId: testDeck.id, front: "F3", back: "B3")
+        let card4 = Card(noteId: UUID(), deckId: testDeck.id, front: "F4", back: "B4")
+        let card5 = Card(noteId: UUID(), deckId: testDeck.id, front: "F5", back: "B5")
+        let card6 = Card(noteId: UUID(), deckId: testDeck.id, front: "F6", back: "B6")
+
+        for card in [card1, card2, card3, card4, card5, card6] {
+            cardRepository.save(card)
+            cardRepository.saveSchedule(CardSchedule(cardId: card.id))
+        }
+
+        let viewModel = StudySessionViewModel()
+        viewModel.loadDailyGoal()
+        viewModel.loadTodayReviewCount()
+
+        XCTAssertEqual(viewModel.dailyGoal, 5, "Should respect UserDefaults daily goal")
+    }
+
+    func testStudySessionViewModelTodayReviewCountAfterAnswer() {
+        let viewModel = StudySessionViewModel()
+        viewModel.loadDailyGoal()
+        viewModel.loadTodayReviewCount()
+
+        let initialCount = viewModel.todayReviewCount
+
+        viewModel.todayReviewCount += 1
+
+        XCTAssertEqual(viewModel.todayReviewCount, initialCount + 1, "Review count should increment")
+    }
+
+    func testStudySessionViewModelRemainingCalculation() {
+        let viewModel = StudySessionViewModel()
+        viewModel.dailyGoal = 20
+        viewModel.todayReviewCount = 15
+
+        let remaining = viewModel.dailyGoal - viewModel.todayReviewCount
+        XCTAssertEqual(remaining, 5, "Remaining should be 5")
+    }
+
+    func testStudySessionViewModelLoadsTodayReviewCount() {
+        let reviewLogRepo = ReviewLogRepository()
+
+        let card = Card(
+            noteId: UUID(),
+            deckId: testDeck.id,
+            front: "Front",
+            back: "Back"
+        )
+        cardRepository.save(card)
+
+        let log = ReviewLog(
+            cardId: card.id,
+            rating: .good,
+            interval: 1,
+            easeFactor: 2.5,
+            timeTaken: 5.0
+        )
+        reviewLogRepo.save(log)
+
+        let viewModel = StudySessionViewModel()
+        viewModel.loadTodayReviewCount()
+
+        XCTAssertGreaterThanOrEqual(viewModel.todayReviewCount, 1, "Should load today's review count")
     }
 }

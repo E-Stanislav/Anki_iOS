@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @State private var notificationsEnabled = true
-    @State private var dailyGoal = 20
+    @AppStorage("dailyGoal") private var dailyGoal = 20
     @State private var swipeGesturesEnabled = true
     @AppStorage("selectedTheme") private var selectedTheme = "system"
     @StateObject private var notificationWrapper = NotificationServiceWrapper()
@@ -19,7 +19,7 @@ struct SettingsView: View {
                 }
 
                 Section("Study") {
-                    Stepper("Daily Goal: \(dailyGoal)", value: $dailyGoal, in: 5...100, step: 5)
+                    Stepper("Daily Goal: \(dailyGoal) cards", value: $dailyGoal, in: 5...100, step: 5)
 
                     Toggle("Swipe Gestures", isOn: $swipeGesturesEnabled)
 

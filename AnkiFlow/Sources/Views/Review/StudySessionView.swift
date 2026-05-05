@@ -6,12 +6,20 @@ struct StudyHomeView: View {
 
     var body: some View {
         List {
+            Section {
+                DailyProgressCard(
+                    reviewed: viewModel.todayReviewCount,
+                    goal: viewModel.dailyGoal
+                )
+            }
+
             if !viewModel.decksWithDueCards.isEmpty {
                 Section("Ready to Review") {
                     ForEach(viewModel.decksWithDueCards, id: \.deck.id) { deckWithCards in
                         StudyDeckRow(
                             deck: deckWithCards.deck,
                             dueCount: deckWithCards.dueCount,
+                            remainingToday: remainingForToday(),
                             onStudy: {
                                 viewModel.startSession(deckId: deckWithCards.deck.id)
                             }
@@ -30,23 +38,96 @@ struct StudyHomeView: View {
             }
         }
         .navigationTitle("Study")
+        .onAppear {
+            viewModel.loadTodayReviewCount()
+            viewModel.loadDailyGoal()
+            viewModel.loadDecks()
+        }
         .fullScreenCover(isPresented: $viewModel.isSessionActive) {
             ReviewSessionView(viewModel: viewModel)
         }
+    }
+
+    private func remainingForToday() -> Int {
+        max(0, viewModel.dailyGoal - viewModel.todayReviewCount)
+    }
+}
+
+struct DailyProgressCard: View {
+    let reviewed: Int
+    let goal: Int
+
+    private var progress: Double {
+        guard goal > 0 else { return 0 }
+        return min(Double(reviewed) / Double(goal), 1.0)
+    }
+
+    private var remaining: Int {
+        max(0, goal - reviewed)
+    }
+
+    private var isComplete: Bool {
+        reviewed >= goal
+    }
+
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(isComplete ? "Daily Goal Complete!" : "Today's Progress")
+                        .font(.headline)
+                        .foregroundColor(isComplete ? .green : .primary)
+
+                    Text("\(reviewed)/\(goal) cards reviewed")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                if isComplete {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title)
+                        .foregroundColor(.green)
+                } else {
+                    Text("\(remaining) left")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.orange)
+                }
+            }
+
+            ProgressView(value: progress)
+                .tint(isComplete ? .green : .accentColor)
+
+            if !isComplete {
+                Text("Keep going! You're \(Int(progress * 100))% of the way to your daily goal.")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding()
+        .background(Color(.secondarySystemBackground))
+        .cornerRadius(12)
     }
 }
 
 struct StudyDeckRow: View {
     let deck: Deck
     let dueCount: Int
+    let remainingToday: Int
     let onStudy: () -> Void
+
+    private var displayCount: Int {
+        min(dueCount, remainingToday)
+    }
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text(deck.name)
                     .font(.headline)
-                Text("\(dueCount) cards due")
+                Text("\(displayCount) cards available")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -55,6 +136,7 @@ struct StudyDeckRow: View {
 
             Button("Study", action: onStudy)
                 .buttonStyle(.borderedProminent)
+                .disabled(dueCount == 0 || remainingToday <= 0)
         }
     }
 }
@@ -76,7 +158,9 @@ struct ReviewSessionView: View {
                     VStack(spacing: 0) {
                         SessionProgressBar(
                             current: viewModel.currentIndex,
-                            total: viewModel.totalCards
+                            total: viewModel.totalCards,
+                            dailyGoal: viewModel.dailyGoal,
+                            todayCount: viewModel.todayReviewCount
                         )
 
                         Spacer()
@@ -259,15 +343,33 @@ struct FlashcardView: View {
 struct SessionProgressBar: View {
     let current: Int
     let total: Int
+    let dailyGoal: Int
+    let todayCount: Int
+
+    private var remainingToday: Int {
+        max(0, dailyGoal - todayCount)
+    }
+
+    private var effectiveTotal: Int {
+        min(total, remainingToday)
+    }
 
     var body: some View {
         VStack(spacing: 8) {
-            ProgressView(value: Double(current), total: Double(total))
-                .tint(.accentColor)
+            HStack {
+                Text("\(current)/\(effectiveTotal)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
 
-            Text("\(current)/\(total)")
-                .font(.caption)
-                .foregroundColor(.secondary)
+                Spacer()
+
+                Text("Goal: \(remainingToday) left today")
+                    .font(.caption2)
+                    .foregroundColor(.orange)
+            }
+
+            ProgressView(value: Double(current), total: Double(effectiveTotal))
+                .tint(.accentColor)
         }
         .padding()
     }
