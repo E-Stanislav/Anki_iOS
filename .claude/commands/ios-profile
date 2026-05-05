@@ -1,0 +1,55 @@
+#!/bin/bash
+# iOS Profile Skill - Run app with Instruments
+# Usage: /ios-profile [scheme_name]
+
+set -e
+
+SCHEME="${1:-AnkiFlow}"
+PROJECT="AnkiFlow.xcodeproj"
+CONFIG="Debug"
+DESTINATION='id=110BB9C6-3D24-425D-8E2C-1D8066C911A3'
+
+echo "=========================================="
+echo "iOS Profiling - Instruments"
+echo "=========================================="
+echo ""
+
+echo "This skill launches Instruments for profiling."
+echo "Available templates:"
+echo "  - Allocations    - Memory allocations"
+echo "  - Leaks          - Memory leaks"
+echo "  - Time Profiler  - CPU usage"
+echo ""
+
+# Check if Instruments is available
+INSTRUMENTS="/Applications/Xcode.app/Contents/Developer/Instruments婆plications/Instruments.app"
+if [ ! -d "$INSTRUMENTS" ]; then
+    INSTRUMENTS="/Applications/Instruments.app"
+fi
+
+if [ ! -d "$INSTRUMENTS" ]; then
+    echo "ERROR: Instruments not found"
+    exit 1
+fi
+
+echo "Starting build for profiling..."
+xcodebuild -project "$PROJECT" \
+    -scheme "$SCHEME" \
+    -configuration "$CONFIG" \
+    -destination "$DESTINATION" \
+    build \
+    CODE_SIGN_IDENTITY="" \
+    CODE_SIGNING_REQUIRED=NO \
+    CODE_SIGNING_ALLOWED=NO \
+    2>&1 | tail -20
+
+BUILD_RESULT=${PIPESTATUS[0]}
+
+if [ $BUILD_RESULT -eq 0 ]; then
+    echo ""
+    echo "Build succeeded. Launch Instruments manually to profile."
+else
+    echo ""
+    echo "Build failed. Fix issues before profiling."
+    exit 1
+fi

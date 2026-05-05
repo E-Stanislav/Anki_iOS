@@ -1,0 +1,48 @@
+#!/bin/bash
+# iOS Lint Skill - Run SwiftLint for code quality
+# Usage: /ios-lint [path]
+
+set -e
+
+TARGET_PATH="${1:-AnkiFlow/Sources}"
+CONFIG_FILE=".swiftlint.yml"
+
+echo "=========================================="
+echo "iOS Lint - SwiftLint Best Practices"
+echo "=========================================="
+echo ""
+
+# Check SwiftLint is installed
+if ! command -v swiftlint &> /dev/null; then
+    echo "SwiftLint not found. Installing..."
+    brew install swiftlint
+fi
+
+# Check if config exists
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "WARNING: No .swiftlint.yml found, using defaults"
+fi
+
+echo "Linting: $TARGET_PATH"
+echo ""
+
+# Run SwiftLint with autocorrect
+swiftlint \
+    --config "$CONFIG_FILE" \
+    --path "$TARGET_PATH" \
+    --format \
+    --reporter json \
+    2>&1
+
+LINT_RESULT=$?
+
+echo ""
+echo "=========================================="
+if [ $LINT_RESULT -eq 0 ]; then
+    echo "LINTING PASSED - No violations found"
+else
+    echo "LINTING COMPLETED with warnings/errors"
+fi
+echo "=========================================="
+
+exit $LINT_RESULT

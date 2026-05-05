@@ -1,0 +1,56 @@
+# SwiftLint Configuration for AnkiFlow
+# Based on Swift official style guide and best practices
+
+# Disabled rules (project-specific reasons)
+disabled_rules:
+  - trailing_whitespace
+  - force_cast
+  - force_try
+  - nesting
+  - file_length
+  - type_body_length
+  - function_body_length
+  - cyclomatic_complexity
+
+# Enabled rules (recommended)
+opt_in_rules:
+  - empty_count
+  - closure_spacing
+  - contains_over_first_not_nil
+  - fallthrough
+  - fatal_error_message
+  - multi_line_Parameters
+  - redundant_nil_coalescing
+  - strict_functions
+  - strict_unoptional_assertion
+  - switch_case_on_newline
+
+# Line and character limits
+line_length:
+  warning: 120
+  error: 200
+  ignores_comments: true
+  ignores_urls: true
+
+# Type name conventions
+type_name:
+  min_length: 3
+  max_length: 50
+  allowed_symbols: [_]
+
+# Identifier name conventions
+identifier_name:
+  min_length: 1
+  max_length: 60
+  excluded:
+    - id
+    - i
+    - j
+    - x
+    - y
+    - z
+    - on
+    - off
+
+# Reporter format
+reporter: "xcode"

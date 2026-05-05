@@ -1,0 +1,56 @@
+#!/bin/bash
+# iOS Build Skill - Build the AnkiFlow iOS app
+# Usage: /ios-build [scheme_name]
+
+set -e
+
+SCHEME="${1:-AnkiFlow}"
+PROJECT="AnkiFlow.xcodeproj"
+CONFIG="Debug"
+DESTINATION='id=110BB9C6-3D24-425D-8E2C-1D8066C911A3'
+
+echo "=========================================="
+echo "iOS Build - Best Practices"
+echo "=========================================="
+echo ""
+
+# Clean derived data first (optional - uncomment if needed)
+# echo "Cleaning derived data..."
+# rm -rf ~/Library/Developer/Xcode/DerivedData/AnkiFlow-*
+
+# Check project exists
+if [ ! -d "$PROJECT" ]; then
+    echo "ERROR: Project $PROJECT not found"
+    exit 1
+fi
+
+echo "Building scheme: $SCHEME"
+echo "Configuration: $CONFIG"
+echo "Destination: $DESTINATION"
+echo ""
+
+# Build with best practices
+xcodebuild -project "$PROJECT" \
+    -scheme "$SCHEME" \
+    -configuration "$CONFIG" \
+    -destination "$DESTINATION" \
+    -parallelizeTargets \
+    -jobs $(sysctl -n hw.ncpu) \
+    build \
+    CODE_SIGN_IDENTITY="" \
+    CODE_SIGNING_REQUIRED=NO \
+    CODE_SIGNING_ALLOWED=NO \
+    2>&1
+
+BUILD_RESULT=$?
+
+echo ""
+echo "=========================================="
+if [ $BUILD_RESULT -eq 0 ]; then
+    echo "BUILD SUCCEEDED"
+else
+    echo "BUILD FAILED"
+fi
+echo "=========================================="
+
+exit $BUILD_RESULT
