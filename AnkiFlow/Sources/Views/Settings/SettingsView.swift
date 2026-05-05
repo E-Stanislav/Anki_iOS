@@ -6,6 +6,7 @@ struct SettingsView: View {
     @State private var swipeGesturesEnabled = true
     @AppStorage("selectedTheme") private var selectedTheme = "system"
     @StateObject private var notificationWrapper = NotificationServiceWrapper()
+    @State private var showingDeleteConfirmation = false
 
     var body: some View {
         NavigationStack {
@@ -82,13 +83,37 @@ struct SettingsView: View {
 
                 Section {
                     Button(role: .destructive) {
+                        showingDeleteConfirmation = true
                     } label: {
                         Text("Delete All Data")
                     }
                 }
+
+                Section {
+                    HStack {
+                        Text("Version")
+                        Spacer()
+                        Text("1.0.0")
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
             .navigationTitle("Settings")
+            .alert("Delete All Data?", isPresented: $showingDeleteConfirmation) {
+                Button("Cancel", role: .cancel) {}
+                Button("Delete", role: .destructive) {
+                    deleteAllData()
+                }
+            } message: {
+                Text("This will permanently delete all your decks and cards. This action cannot be undone.")
+            }
         }
+    }
+
+    private func deleteAllData() {
+        let deckRepo = DeckRepository()
+        deckRepo.deleteAll()
+        UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")
     }
 }
 
