@@ -20,9 +20,9 @@ final class HomeViewModel: ObservableObject {
 
     func loadData() {
         decks = deckRepo.getAll()
-        // if decks.isEmpty {
-        //     createSampleDeck()
-        // }
+        if decks.isEmpty {
+            createSampleDeck()
+        }
         calculateTodayStats()
     }
 
