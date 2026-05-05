@@ -140,8 +140,14 @@ struct HeatmapCard: View {
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: 7)
     private let weekdays = ["S", "M", "T", "W", "T", "F", "S"]
 
+    private let calendar: Calendar = {
+        var cal = Calendar.current
+        cal.firstWeekday = 1 // Sunday
+        return cal
+    }()
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(spacing: 12) {
             Text("Activity")
                 .font(.headline)
 
@@ -151,20 +157,26 @@ struct HeatmapCard: View {
                         Text(day)
                             .font(.caption2)
                             .foregroundColor(.secondary)
+                            .frame(width: 20, height: 20)
                     }
                 }
 
-                LazyVGrid(columns: columns, spacing: 4) {
-                    ForEach(activities) { activity in
-                        Rectangle()
-                            .fill(colorForCount(activity.count))
-                            .frame(width: 20, height: 20)
-                            .cornerRadius(4)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyVGrid(columns: columns, spacing: 4) {
+                        ForEach(activities) { activity in
+                            Rectangle()
+                                .fill(colorForCount(activity.count))
+                                .frame(width: 20, height: 20)
+                                .cornerRadius(4)
+                        }
                     }
+                    .frame(maxWidth: .infinity)
                 }
             }
+            .frame(maxWidth: .infinity)
 
             HStack {
+                Spacer()
                 Text("Less")
                     .font(.caption2)
                     .foregroundColor(.secondary)
@@ -177,8 +189,10 @@ struct HeatmapCard: View {
                 Text("More")
                     .font(.caption2)
                     .foregroundColor(.secondary)
+                Spacer()
             }
         }
+        .frame(maxWidth: .infinity)
         .padding()
         .background(Color(.secondarySystemBackground))
         .cornerRadius(16)
@@ -267,18 +281,7 @@ final class StatsViewModel: ObservableObject {
     }
 
     private func loadHeatmap() {
-        let calendar = Calendar.current
-        var activities: [DayActivity] = []
-
-        for i in 0..<42 {
-            if let date = calendar.date(byAdding: .day, value: -i, to: Date()) {
-                let startOfDay = calendar.startOfDay(for: date)
-                let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
-                let count = Int.random(in: 0...25)
-                activities.append(DayActivity(date: startOfDay, count: count))
-            }
-        }
-
-        heatmapData = activities.reversed()
+        let activities = reviewLogRepo.getActivityForPeriod(days: 42)
+        heatmapData = activities.map { DayActivity(date: $0.date, count: $0.count) }
     }
 }

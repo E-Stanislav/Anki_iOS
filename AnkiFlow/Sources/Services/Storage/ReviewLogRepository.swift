@@ -4,6 +4,7 @@ protocol ReviewLogRepositoryProtocol {
     func getAll(for cardId: UUID) -> [ReviewLog]
     func getRecent(limit: Int) -> [ReviewLog]
     func getStats(from: Date, to: Date) -> ReviewStats
+    func getActivityForPeriod(days: Int) -> [DailyActivityCount]
     func save(_ log: ReviewLog)
 }
 
@@ -12,6 +13,12 @@ struct ReviewStats {
     var averageTime: TimeInterval
     var retention: Double
     var streak: Int
+}
+
+struct DailyActivityCount: Identifiable {
+    let id = UUID()
+    let date: Date
+    let count: Int
 }
 
 final class ReviewLogRepository: ReviewLogRepositoryProtocol {
@@ -73,6 +80,31 @@ final class ReviewLogRepository: ReviewLogRepositoryProtocol {
             log.easeFactor,
             log.timeTaken
         ])
+    }
+
+    func getActivityForPeriod(days: Int) -> [DailyActivityCount] {
+        let calendar = Calendar.current
+        let now = Date()
+        var activities: [DailyActivityCount] = []
+
+        for i in 0..<days {
+            guard let date = calendar.date(byAdding: .day, value: -i, to: now) else { continue }
+            let startOfDay = calendar.startOfDay(for: date)
+            guard let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else { continue }
+
+            let rows = db.query(
+                """
+                SELECT COUNT(*) as count FROM review_logs
+                WHERE reviewed_at >= ? AND reviewed_at < ?
+                """,
+                parameters: [startOfDay.timeIntervalSince1970, endOfDay.timeIntervalSince1970]
+            )
+
+            let count = rows.first?["count"] as? Int ?? 0
+            activities.append(DailyActivityCount(date: startOfDay, count: count))
+        }
+
+        return activities.reversed()
     }
 
     private func decodeReviewLog(from row: [String: Any]) -> ReviewLog? {
