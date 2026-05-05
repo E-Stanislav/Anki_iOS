@@ -58,6 +58,9 @@ struct StatsView: View {
                 .padding(.vertical)
             }
             .navigationTitle("Statistics")
+            .onAppear {
+                viewModel.loadStats()
+            }
             .refreshable {
                 viewModel.loadStats()
             }
