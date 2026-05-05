@@ -6,7 +6,7 @@ final class DatabaseService {
 
     private var db: OpaquePointer?
     private let queue = DispatchQueue(label: "com.ankiflow.database", qos: .userInitiated)
-    private let schemaVersion = 3
+    private let schemaVersion = 4
 
     private init() {
         openDatabase()
@@ -44,7 +44,7 @@ final class DatabaseService {
             .appendingPathComponent("ankiflow.sqlite")
         try? FileManager.default.removeItem(at: fileURL)
         sqlite3_open(fileURL.path, &db)
-        execute("PRAGMA foreign_keys = OFF")
+        execute("PRAGMA foreign_keys = ON")
     }
 
     private func getUserVersion() -> Int {

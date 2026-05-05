@@ -316,4 +316,152 @@ let decks = deckRepository.getAll()
         let state = AppState()
         XCTAssertEqual(state.selectedTheme, .system)
     }
+
+    // MARK: - Card Editor Tests
+
+    func testCardEditorViewModelCanSaveWithValidInput() {
+        let viewModel = CardEditorViewModel()
+        viewModel.front = "Test Front"
+        viewModel.back = "Test Back"
+        viewModel.selectedDeckId = testDeck.id
+
+        XCTAssertTrue(viewModel.canSave, "Should be able to save with front, back and deck")
+    }
+
+    func testCardEditorViewModelCannotSaveWithoutFront() {
+        let viewModel = CardEditorViewModel()
+        viewModel.back = "Test Back"
+        viewModel.selectedDeckId = testDeck.id
+
+        XCTAssertFalse(viewModel.canSave, "Should not be able to save without front")
+    }
+
+    func testCardEditorViewModelCannotSaveWithoutBack() {
+        let viewModel = CardEditorViewModel()
+        viewModel.front = "Test Front"
+        viewModel.selectedDeckId = testDeck.id
+
+        XCTAssertFalse(viewModel.canSave, "Should not be able to save without back")
+    }
+
+    func testCardEditorViewModelCannotSaveWithoutDeck() {
+        let viewModel = CardEditorViewModel()
+        viewModel.front = "Test Front"
+        viewModel.back = "Test Back"
+
+        XCTAssertFalse(viewModel.canSave, "Should not be able to save without deck")
+    }
+
+    func testCardEditorViewModelLoadDecksCreatesDefaultDeck() {
+        deckRepository.deleteAll()
+
+        let viewModel = CardEditorViewModel()
+        viewModel.loadDecks()
+
+        XCTAssertFalse(viewModel.decks.isEmpty, "Should have at least one deck after load")
+    }
+
+    func testCardEditorViewModelSaveCardCreatesCardAndSchedule() {
+        let viewModel = CardEditorViewModel()
+        viewModel.loadDecks()
+
+        viewModel.front = "Front Text"
+        viewModel.back = "Back Text"
+        viewModel.selectedDeckId = testDeck.id
+
+        viewModel.saveCard()
+
+        XCTAssertTrue(viewModel.front.isEmpty, "Front should be cleared after save")
+        XCTAssertTrue(viewModel.back.isEmpty, "Back should be cleared after save")
+
+        let cards = cardRepository.getAll(for: testDeck.id)
+        let savedCard = cards.first { $0.front == "Front Text" }
+        XCTAssertNotNil(savedCard, "Card should be saved with correct front text")
+        XCTAssertEqual(savedCard?.back, "Back Text", "Card should have correct back text")
+
+        if let card = savedCard {
+            let schedule = cardRepository.getSchedule(for: card.id)
+            XCTAssertNotNil(schedule, "Schedule should be created for new card")
+            XCTAssertEqual(schedule?.status, .new, "New card should have new status")
+        }
+    }
+
+    func testCardEditorViewModelSaveCardTrimsWhitespace() {
+        let viewModel = CardEditorViewModel()
+        viewModel.loadDecks()
+
+        viewModel.front = "  Front with spaces  "
+        viewModel.back = "  Back with spaces  "
+        viewModel.selectedDeckId = testDeck.id
+
+        viewModel.saveCard()
+
+        let cards = cardRepository.getAll(for: testDeck.id)
+        let savedCard = cards.first { $0.front == "Front with spaces" }
+        XCTAssertNotNil(savedCard, "Card should be saved with trimmed front")
+        XCTAssertEqual(savedCard?.front, "Front with spaces", "Front should be trimmed")
+        XCTAssertEqual(savedCard?.back, "Back with spaces", "Back should be trimmed")
+    }
+
+    func testCardEditorViewModelResetClearsFields() {
+        let viewModel = CardEditorViewModel()
+        viewModel.front = "Some Front"
+        viewModel.back = "Some Back"
+        viewModel.tagsText = "tag1, tag2"
+
+        viewModel.reset()
+
+        XCTAssertTrue(viewModel.front.isEmpty, "Front should be cleared")
+        XCTAssertTrue(viewModel.back.isEmpty, "Back should be cleared")
+        XCTAssertTrue(viewModel.tagsText.isEmpty, "Tags should be cleared")
+    }
+
+    func testCardEditorViewModelUpdateExistingCard() {
+        let viewModel = CardEditorViewModel()
+        viewModel.loadDecks()
+
+        let card = Card(
+            noteId: UUID(),
+            deckId: testDeck.id,
+            front: "Original Front",
+            back: "Original Back"
+        )
+        cardRepository.save(card)
+        let schedule = CardSchedule(cardId: card.id)
+        cardRepository.saveSchedule(schedule)
+
+        viewModel.editingCardId = card.id
+        viewModel.front = "Updated Front"
+        viewModel.back = "Updated Back"
+        viewModel.selectedDeckId = testDeck.id
+
+        viewModel.saveCard()
+
+        let updatedCard = cardRepository.getById(card.id)
+        XCTAssertEqual(updatedCard?.front, "Updated Front", "Card front should be updated")
+        XCTAssertEqual(updatedCard?.back, "Updated Back", "Card back should be updated")
+    }
+
+    func testCardEditorViewModelDeleteCard() {
+        let viewModel = CardEditorViewModel()
+        viewModel.loadDecks()
+
+        let card = Card(
+            noteId: UUID(),
+            deckId: testDeck.id,
+            front: "To Delete",
+            back: "Will be deleted"
+        )
+        cardRepository.save(card)
+        let schedule = CardSchedule(cardId: card.id)
+        cardRepository.saveSchedule(schedule)
+
+        viewModel.deleteCard(card.id)
+
+        let deletedCard = cardRepository.getById(card.id)
+        XCTAssertNil(deletedCard, "Card should be deleted")
+
+        let deletedSchedule = cardRepository.getSchedule(for: card.id)
+        XCTAssertNil(deletedSchedule, "Schedule should be deleted too")
+    }
 }

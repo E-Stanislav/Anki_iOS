@@ -3,11 +3,13 @@ import SwiftUI
 struct CreateHomeView: View {
     @State private var showingEditor = false
     @State private var viewModel = CardEditorViewModel()
+    @State private var selectedCardForEdit: Card?
 
     var body: some View {
         List {
             Section("Quick Create") {
                 Button {
+                    viewModel.reset()
                     viewModel.quickCreateMode = true
                     showingEditor = true
                 } label: {
@@ -15,6 +17,7 @@ struct CreateHomeView: View {
                 }
 
                 Button {
+                    viewModel.reset()
                     viewModel.quickCreateMode = false
                     showingEditor = true
                 } label: {
@@ -28,7 +31,20 @@ struct CreateHomeView: View {
                         .foregroundColor(.secondary)
                 } else {
                     ForEach(viewModel.recentCards) { card in
-                        CardPreviewRow(card: card)
+                        Button {
+                            selectedCardForEdit = card
+                            viewModel.loadCardForEditing(card)
+                            showingEditor = true
+                        } label: {
+                            CardPreviewRow(card: card)
+                        }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                viewModel.deleteCard(card.id)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                     }
                 }
             }
@@ -98,7 +114,7 @@ struct CardEditorView: View {
                     }
                 }
             }
-            .navigationTitle(viewModel.quickCreateMode ? "Quick Card" : "New Card")
+            .navigationTitle(viewModel.isEditing ? "Edit Card" : (viewModel.quickCreateMode ? "Quick Card" : "New Card"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -127,6 +143,7 @@ final class CardEditorViewModel: ObservableObject {
     @Published var quickCreateMode = true
     @Published var recentCards: [Card] = []
     @Published var decks: [Deck] = []
+    var editingCardId: UUID?
 
     private let cardRepo = CardRepository()
     private let deckRepo = DeckRepository()
@@ -135,6 +152,10 @@ final class CardEditorViewModel: ObservableObject {
         !front.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
         !back.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
         selectedDeckId != nil
+    }
+
+    var isEditing: Bool {
+        editingCardId != nil
     }
 
     func loadData() {
@@ -155,6 +176,9 @@ final class CardEditorViewModel: ObservableObject {
     }
 
     func loadRecentCards() {
+        guard let deckId = decks.first?.id else { return }
+        let allCards = cardRepo.getAll(for: deckId)
+        recentCards = Array(allCards.prefix(10))
     }
 
     func saveCard() {
@@ -163,26 +187,47 @@ final class CardEditorViewModel: ObservableObject {
             return
         }
 
-        let card = Card(
-            noteId: UUID(),
-            deckId: deckId,
-            front: front.trimmingCharacters(in: .whitespacesAndNewlines),
-            back: back.trimmingCharacters(in: .whitespacesAndNewlines)
-        )
-        print("DEBUG saveCard: card.id=\(card.id), deckId=\(deckId), front=\(card.front)")
-        cardRepo.save(card)
-
-        let schedule = CardSchedule(cardId: card.id)
-        print("DEBUG saveCard: schedule.cardId=\(schedule.cardId), status=\(schedule.status), due=\(schedule.due)")
-        cardRepo.saveSchedule(schedule)
+        if let cardId = editingCardId, let existingCard = cardRepo.getById(cardId) {
+            var updatedCard = existingCard
+            updatedCard.front = front.trimmingCharacters(in: .whitespacesAndNewlines)
+            updatedCard.back = back.trimmingCharacters(in: .whitespacesAndNewlines)
+            updatedCard.deckId = deckId
+            updatedCard.updatedAt = Date()
+            cardRepo.save(updatedCard)
+        } else {
+            let card = Card(
+                noteId: UUID(),
+                deckId: deckId,
+                front: front.trimmingCharacters(in: .whitespacesAndNewlines),
+                back: back.trimmingCharacters(in: .whitespacesAndNewlines)
+            )
+            cardRepo.save(card)
+            let schedule = CardSchedule(cardId: card.id)
+            cardRepo.saveSchedule(schedule)
+        }
 
         front = ""
         back = ""
+        editingCardId = nil
+        loadRecentCards()
+    }
+
+    func deleteCard(_ cardId: UUID) {
+        cardRepo.delete(cardId)
+        loadRecentCards()
+    }
+
+    func loadCardForEditing(_ card: Card) {
+        editingCardId = card.id
+        front = card.front
+        back = card.back
+        selectedDeckId = card.deckId
     }
 
     func reset() {
         front = ""
         back = ""
         tagsText = ""
+        editingCardId = nil
     }
 }
