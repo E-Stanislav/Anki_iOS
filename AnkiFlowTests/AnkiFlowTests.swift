@@ -224,4 +224,96 @@ let decks = deckRepository.getAll()
             XCTAssertFalse(frontHasHTML, "Front should not contain HTML")
         }
     }
+
+    func testNotificationServicePermissionRequest() async {
+        let service = NotificationService()
+
+        let granted = await service.requestPermission()
+        XCTAssertTrue(granted, "Permission should be granted")
+
+        let authorized = service.isAuthorized()
+        XCTAssertTrue(authorized, "Should be authorized after permission request")
+    }
+
+    func testNotificationServiceScheduleDailyReminder() async {
+        let service = NotificationService()
+        await service.requestPermission()
+
+        var scheduled = await service.scheduleDailyReminder(hour: 9, minute: 0)
+        XCTAssertTrue(scheduled, "Should schedule daily reminder")
+
+        scheduled = await service.scheduleDailyReminder(hour: 20, minute: 30)
+        XCTAssertTrue(scheduled, "Should schedule evening reminder")
+    }
+
+    func testNotificationServiceCancelAllReminders() async {
+        let service = NotificationService()
+        await service.requestPermission()
+
+        await service.scheduleDailyReminder(hour: 9, minute: 0)
+
+        let cancelled = service.cancelAllReminders()
+        XCTAssertTrue(cancelled, "Should cancel all reminders")
+    }
+
+    // MARK: - Theme Tests
+
+    func testAppThemeLight() {
+        let theme = AppTheme.light
+        XCTAssertEqual(theme.rawValue, "light")
+    }
+
+    func testAppThemeDark() {
+        let theme = AppTheme.dark
+        XCTAssertEqual(theme.rawValue, "dark")
+    }
+
+    func testAppThemeSystem() {
+        let theme = AppTheme.system
+        XCTAssertEqual(theme.rawValue, "system")
+    }
+
+    func testAppThemeRawValueParsing() {
+        XCTAssertEqual(AppTheme(rawValue: "light"), .light)
+        XCTAssertEqual(AppTheme(rawValue: "dark"), .dark)
+        XCTAssertEqual(AppTheme(rawValue: "system"), .system)
+        XCTAssertNil(AppTheme(rawValue: "invalid"))
+    }
+
+    func testAppStateSetAndRetrieveTheme() {
+        let state = AppState()
+
+        state.setTheme(.light)
+        XCTAssertEqual(state.selectedTheme, .light)
+
+        state.setTheme(.dark)
+        XCTAssertEqual(state.selectedTheme, .dark)
+
+        state.setTheme(.system)
+        XCTAssertEqual(state.selectedTheme, .system)
+    }
+
+    func testAppStatePersistsThemeToUserDefaults() {
+        let state = AppState()
+
+        state.setTheme(.dark)
+        let stored = UserDefaults.standard.string(forKey: "selectedTheme")
+        XCTAssertEqual(stored, "dark")
+    }
+
+    func testAppStateInitialThemeFromUserDefaults() {
+        UserDefaults.standard.set("dark", forKey: "selectedTheme")
+        let state = AppState()
+        XCTAssertEqual(state.selectedTheme, .dark)
+
+        UserDefaults.standard.set("light", forKey: "selectedTheme")
+        let state2 = AppState()
+        XCTAssertEqual(state2.selectedTheme, .light)
+    }
+
+    func testAppStateDefaultsToSystemTheme() {
+        UserDefaults.standard.removeObject(forKey: "selectedTheme")
+        let state = AppState()
+        XCTAssertEqual(state.selectedTheme, .system)
+    }
 }

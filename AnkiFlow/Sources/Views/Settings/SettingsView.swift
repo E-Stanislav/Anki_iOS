@@ -11,9 +11,9 @@ struct SettingsView: View {
             List {
                 Section("Appearance") {
                     Picker("Theme", selection: $selectedTheme) {
-                        Text("Light").tag("light")
-                        Text("Dark").tag("dark")
-                        Text("System").tag("system")
+                        Text("Light").tag(AppTheme.light.rawValue)
+                        Text("Dark").tag(AppTheme.dark.rawValue)
+                        Text("System").tag(AppTheme.system.rawValue)
                     }
                 }
 

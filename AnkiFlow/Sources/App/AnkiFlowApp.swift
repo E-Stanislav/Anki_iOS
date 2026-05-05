@@ -21,11 +21,14 @@ struct AppRootView: View {
     @ObservedObject var appState: AppState
 
     var body: some View {
-        if appState.hasCompletedOnboarding {
-            MainTabView()
-        } else {
-            OnboardingView(appState: appState)
+        Group {
+            if appState.hasCompletedOnboarding {
+                MainTabView()
+            } else {
+                OnboardingView(appState: appState)
+            }
         }
+        .preferredColorScheme(appState.selectedTheme.colorScheme)
     }
 }
 

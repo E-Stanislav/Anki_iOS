@@ -33,6 +33,7 @@
 		C3756541F741D0E377975CA2 /* ApkgImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65493D436DAC0E4A78ABEE7A /* ApkgImporter.swift */; };
 		C3762FD238F8BD2129FD0670 /* ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1465AF726B61B556E55E665D /* ImportView.swift */; };
 		C9ACD2295AF71A8CDA42908E /* CardEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BFF98B5531D33819D4EC43 /* CardEditorView.swift */; };
+		CD8F7E603AF7F4030B232DC8 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DC70FCE44705EA44F87C56 /* NotificationService.swift */; };
 		CE5EA844D1526F4EAF39ACB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9332FFBD008A92E7489F8857 /* Assets.xcassets */; };
 		D4E7047F7ADDB234C22FB1CB /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63A61AE19A8E7D1C9FD824D /* Deck.swift */; };
 		E07A84630048EE06349E6B3E /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC578AFAEC0CB05B7254460E /* Media.swift */; };
@@ -58,12 +59,13 @@
 		32BFF98B5531D33819D4EC43 /* CardEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEditorView.swift; sourceTree = "<group>"; };
 		3C2C763903220B43D4C318CB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		54C7FFB316509E6AB8D80CF5 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
-		55AD97AC540F88157DEA9982 /* AnkiFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnkiFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55AD97AC540F88157DEA9982 /* AnkiFlowTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AnkiFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		582236EFA26C341AFC09461A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnkiFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65493D436DAC0E4A78ABEE7A /* ApkgImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApkgImporter.swift; sourceTree = "<group>"; };
 		6718BE0B479CF825AFF4E0B1 /* SM2Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM2Scheduler.swift; sourceTree = "<group>"; };
 		7699DBB55C8CB569373C6AA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		76DC70FCE44705EA44F87C56 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		868D225B3081989DF1ADB4B2 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		878AE270AE9676B3CF2C2CB3 /* AnkiFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnkiFlowTests.swift; sourceTree = "<group>"; };
 		91EF331418FC86C7442930FE /* ReviewLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewLog.swift; sourceTree = "<group>"; };
@@ -197,6 +199,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		769DC65B89BF95265793EE14 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				76DC70FCE44705EA44F87C56 /* NotificationService.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		9C0E36B9F14AE6FE424BF0B9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,6 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				4BC254002DF4F48831D7E660 /* Import */,
+				769DC65B89BF95265793EE14 /* Notifications */,
 				D7633FBF916350277BD4ECC3 /* Scheduler */,
 				EF4B0C4C5D1272453FFCBE84 /* Storage */,
 				6147DE10FD3938A7A93E6BA2 /* Sync */,
@@ -381,6 +392,7 @@
 						ProvisioningStyle = Automatic;
 					};
 					C57DA51F86C14516FFA15855 = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -448,6 +460,7 @@
 				9356F48431F1EAD7745B54EF /* MainTabView.swift in Sources */,
 				E07A84630048EE06349E6B3E /* Media.swift in Sources */,
 				C0AB3A6A471B1936555AFBD8 /* Note.swift in Sources */,
+				CD8F7E603AF7F4030B232DC8 /* NotificationService.swift in Sources */,
 				838F0DE2C3F17465050138E3 /* OnboardingView.swift in Sources */,
 				75A138C0950724DE80220D01 /* ReviewLog.swift in Sources */,
 				26851CE87EBAC13A14DBC054 /* ReviewLogRepository.swift in Sources */,
@@ -475,14 +488,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
 				INFOPLIST_FILE = AnkiFlowTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app.tests2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnkiFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnkiFlow";
@@ -664,14 +676,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
 				INFOPLIST_FILE = AnkiFlowTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app.tests2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnkiFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnkiFlow";

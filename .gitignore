@@ -1,0 +1,73 @@
+# Xcode
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+*.xcuserstate
+*.xcworkspace
+!default.xcworkspace
+
+# Swift Package Manager
+Packages/
+Package.resolved
+
+# CocoaPods
+Pods/
+*.podspec
+
+# Carthage
+Carthage/Build
+Carthage/LICENSE.md
+
+# Env
+*.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Build products
+*.app
+*.ipa
+*.dSYM
+*.mobileprovision
+*.entitlements
+
+# Logs
+*.log
+
+# Temporary
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Import files
+*.apkg
+*.colpkg
+
+# Misc
+*.p12
+*.cer
