@@ -1,4 +1,5 @@
 import SwiftUI
+import AVFoundation
 
 struct StudyHomeView: View {
     @StateObject private var viewModel = StudySessionViewModel()
@@ -181,6 +182,7 @@ struct StudyDeckRow: View {
 
 struct ReviewSessionView: View {
     @ObservedObject var viewModel: StudySessionViewModel
+    @StateObject private var ttsService = TTSService.shared
     @Environment(\.dismiss) private var dismiss
     @State private var showingExitConfirmation = false
     @State private var dragOffset: CGSize = .zero
@@ -208,6 +210,9 @@ struct ReviewSessionView: View {
                             isAnswerRevealed: viewModel.isAnswerRevealed,
                             offset: dragOffset,
                             predictedRating: predictedRating,
+                            onPlayTTS: { text in
+                                ttsService.speak(text: text)
+                            },
                             onTap: { viewModel.revealAnswer() }
                         )
                         .gesture(swipeGesture)
@@ -311,6 +316,7 @@ struct FlashcardView: View {
     let isAnswerRevealed: Bool
     var offset: CGSize = .zero
     var predictedRating: ReviewRating?
+    var onPlayTTS: (String) -> Void = { _ in }
 
     let onTap: () -> Void
 
@@ -350,6 +356,8 @@ struct FlashcardView: View {
     }
 
     var body: some View {
+        let content = parseCardContent(isAnswerRevealed ? card.back : card.front)
+
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(.secondarySystemBackground))
@@ -371,12 +379,22 @@ struct FlashcardView: View {
             }
 
             VStack(spacing: 16) {
-                let content = parseCardContent(isAnswerRevealed ? card.back : card.front)
-                if !content.topic.isEmpty {
-                    Text(content.topic)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
+                HStack {
+                    if !content.topic.isEmpty {
+                        Text(content.topic)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                    }
+                    Spacer()
+                    Button {
+                        onPlayTTS(content.word)
+                    } label: {
+                        Image(systemName: "speaker.wave.2.fill")
+                            .font(.title3)
+                            .foregroundColor(.accentColor)
+                    }
+                    .accessibilityLabel("Play pronunciation")
                 }
 
                 Spacer()

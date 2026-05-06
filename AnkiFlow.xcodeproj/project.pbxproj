@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0402F92EEE3CB3745FFE74AA /* TTSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6189576868C85F3921799ED /* TTSService.swift */; };
 		0468B3DC8176A846EB8F493E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582236EFA26C341AFC09461A /* AppState.swift */; };
 		15D9DD3D981FEAFF441A5E6F /* StudySessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09818C1632A99497914BD641 /* StudySessionView.swift */; };
+		1EF4D4764EA74F3077C20AC4 /* NoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6AB7E0AA7BE1A8431A201 /* NoteRepository.swift */; };
 		26851CE87EBAC13A14DBC054 /* ReviewLogRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E97C996EB3C4A5BAB8CD280 /* ReviewLogRepository.swift */; };
 		33C25FE75DF4FF45642FF54B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E843B7B10483636075051589 /* SettingsView.swift */; };
 		3552F33F9F362090AB3838EE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20352D858ED4D544E615BF3 /* HomeView.swift */; };
@@ -61,11 +63,12 @@
 		54C7FFB316509E6AB8D80CF5 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		55AD97AC540F88157DEA9982 /* AnkiFlowTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AnkiFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		582236EFA26C341AFC09461A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnkiFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B28CB5C8DAB19367364C7CF /* AnkiFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AnkiFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65493D436DAC0E4A78ABEE7A /* ApkgImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApkgImporter.swift; sourceTree = "<group>"; };
 		6718BE0B479CF825AFF4E0B1 /* SM2Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM2Scheduler.swift; sourceTree = "<group>"; };
 		7699DBB55C8CB569373C6AA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		76DC70FCE44705EA44F87C56 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		77B6AB7E0AA7BE1A8431A201 /* NoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRepository.swift; sourceTree = "<group>"; };
 		868D225B3081989DF1ADB4B2 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		878AE270AE9676B3CF2C2CB3 /* AnkiFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnkiFlowTests.swift; sourceTree = "<group>"; };
 		91EF331418FC86C7442930FE /* ReviewLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewLog.swift; sourceTree = "<group>"; };
@@ -75,6 +78,7 @@
 		A11CBF4E62E936999C4E284D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		A53B3555D010670F3D6E5EF5 /* DeckDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckDetailView.swift; sourceTree = "<group>"; };
 		A931A7BBC3D1575AD45564BB /* CreateDeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDeckView.swift; sourceTree = "<group>"; };
+		B6189576868C85F3921799ED /* TTSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTSService.swift; sourceTree = "<group>"; };
 		B8F5CCC2D41B8198AA821DF6 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		C20352D858ED4D544E615BF3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C472FBF8DDC6C41E7DDC07F4 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -222,6 +226,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		9FA75632241F584C2DF7BFF5 /* TTS */ = {
+			isa = PBXGroup;
+			children = (
+				B6189576868C85F3921799ED /* TTSService.swift */,
+			);
+			path = TTS;
+			sourceTree = "<group>";
+		};
 		A358681B2547C1419DDBBA16 /* Review */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +291,7 @@
 				D7633FBF916350277BD4ECC3 /* Scheduler */,
 				EF4B0C4C5D1272453FFCBE84 /* Storage */,
 				6147DE10FD3938A7A93E6BA2 /* Sync */,
+				9FA75632241F584C2DF7BFF5 /* TTS */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -314,6 +327,7 @@
 				F2B01D9B6B12EEAA36B30B87 /* CardRepository.swift */,
 				868D225B3081989DF1ADB4B2 /* DatabaseService.swift */,
 				ED84B4447A664EB08A62A2A0 /* DeckRepository.swift */,
+				77B6AB7E0AA7BE1A8431A201 /* NoteRepository.swift */,
 				9E97C996EB3C4A5BAB8CD280 /* ReviewLogRepository.swift */,
 			);
 			path = Storage;
@@ -389,6 +403,7 @@
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					BAEF28DBDD81702205B47706 = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					C57DA51F86C14516FFA15855 = {
@@ -403,6 +418,7 @@
 			knownRegions = (
 				Base,
 				en,
+				ru,
 			);
 			mainGroup = D40902CB568EDEA4BBC9F023;
 			minimizedProjectReferenceProxies = 1;
@@ -460,6 +476,7 @@
 				9356F48431F1EAD7745B54EF /* MainTabView.swift in Sources */,
 				E07A84630048EE06349E6B3E /* Media.swift in Sources */,
 				C0AB3A6A471B1936555AFBD8 /* Note.swift in Sources */,
+				1EF4D4764EA74F3077C20AC4 /* NoteRepository.swift in Sources */,
 				CD8F7E603AF7F4030B232DC8 /* NotificationService.swift in Sources */,
 				838F0DE2C3F17465050138E3 /* OnboardingView.swift in Sources */,
 				75A138C0950724DE80220D01 /* ReviewLog.swift in Sources */,
@@ -470,6 +487,7 @@
 				9F730474D3E9BDC6AD6F0755 /* StatsView.swift in Sources */,
 				15D9DD3D981FEAFF441A5E6F /* StudySessionView.swift in Sources */,
 				4A50852D25F4052171F910AE /* StudySessionViewModel.swift in Sources */,
+				0402F92EEE3CB3745FFE74AA /* TTSService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,7 +525,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AnkiFlow/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = AnkiFlow;
@@ -516,7 +533,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -529,7 +546,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3A8F9H7MHQ;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AnkiFlow/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = AnkiFlow;
@@ -538,7 +554,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ankiflow.app;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
