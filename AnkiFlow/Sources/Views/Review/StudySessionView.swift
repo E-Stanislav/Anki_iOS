@@ -429,7 +429,7 @@ struct SessionProgressBar: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack {
-                Text("\(current)/\(effectiveTotal)")
+                Text("\(current)/\(total)")
                     .font(.caption)
                     .foregroundColor(.secondary)
 
@@ -440,7 +440,7 @@ struct SessionProgressBar: View {
                     .foregroundColor(.orange)
             }
 
-            ProgressView(value: Double(current), total: Double(effectiveTotal))
+            ProgressView(value: Double(current), total: Double(total))
                 .tint(.accentColor)
         }
         .padding()
